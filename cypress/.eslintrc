@@ -1,0 +1,22 @@
+{
+  "env": {
+    "cypress/globals": true
+  },
+
+  "extends": [
+    "plugin:cypress/recommended"
+  ],
+
+  "plugins": [
+    "cypress"
+  ],
+
+  "overrides": [
+    {
+      "files": ["**/*.ts"],
+      "rules": {
+        "jest/expect-expect": "off"
+      }
+    }
+  ]
+}

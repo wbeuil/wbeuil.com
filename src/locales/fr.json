@@ -1,0 +1,30 @@
+{
+  "a11y": {
+    "skipContent": "Aller au contenu"
+  },
+  "nav": {
+    "home": "Accueil",
+    "blog": "Blog",
+    "language": "Changer de langue",
+    "theme": "Changer de thème"
+  },
+  "footer": {
+    "more": "PLUS",
+    "media": "MÉDIAS",
+    "links": "LIENS"
+  },
+  "home": {
+    "welcome": "Salut 👋, je suis William Beuil",
+    "about": {
+      "1": "Je suis un développeur français orienté React, React Native et Go. Actuellement chez CloudSkiff, je suis en pleine découverte de l'Open Source et c'est juste incroyable.",
+      "2": "Avec ce site internet, j'aimerais partager tout ce que j'apprends quotidiennement car soyons réaliste, nous restons étudiants à vie.",
+      "3": "Une dernière chose, je suis un addict du CrossFit, un accro à la caféine et le pire joueur de l'histoire de Twitch."
+    },
+    "community": "Ma contribution à la communauté"
+  },
+  "404": {
+    "title": "Désolé 😩, cette page est introuvable",
+    "subtitle": "Je suis désolé si la page que vous recherchez n'éxiste plus. Elle n'est peut-être plus en ligne, ou il y a peut-être une erreur de saisie. Retournez sur la page d'accueil pour trouver ce que vous voulez.",
+    "button": "Retour Sur Accueil"
+  }
+}

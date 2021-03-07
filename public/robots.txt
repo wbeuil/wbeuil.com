@@ -1,0 +1,5 @@
+User-Agent: *
+
+Disallow:
+
+Sitemap: https://wbeuil.com/sitemap.xml

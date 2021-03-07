@@ -38,6 +38,3 @@ yarn-error.log*
 
 # vscode
 .vscode
-
-# sitemap
-public/sitemap.xml
