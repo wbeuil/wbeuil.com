@@ -42,6 +42,14 @@ const SEO = (language = 'en-US'): DefaultSeoProps => {
     openGraph: {
       ...openGraph,
       type: 'website',
+      images: [
+        {
+          url: 'https://wbeuil.com/images/preview.png',
+          width: 1200,
+          height: 628,
+          alt: 'Image Alt wbeuil.com',
+        },
+      ],
     },
     twitter: {
       handle: '@wbeuil',
