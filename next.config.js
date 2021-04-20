@@ -1,4 +1,8 @@
 module.exports = {
+  future: {
+    webpack5: true,
+    strictPostcssConfiguration: true,
+  },
   reactStrictMode: true,
   i18n: {
     locales: ['en-US', 'fr'],
