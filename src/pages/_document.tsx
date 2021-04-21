@@ -19,7 +19,7 @@ class MyDocument extends Document<DocumentProps> {
 
     return (
       <Html dir='ltr'>
-        <Head>
+        <Head nonce={pageProps.nonce}>
           <link
             rel='preload'
             href='/fonts/ubuntu.woff2'
@@ -37,7 +37,7 @@ class MyDocument extends Document<DocumentProps> {
         </Head>
         <body className={pageProps.preferredTheme}>
           <Main />
-          <NextScript />
+          <NextScript nonce={pageProps.nonce} />
         </body>
       </Html>
     );
