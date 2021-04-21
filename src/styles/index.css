@@ -3,27 +3,11 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "Ubuntu";
-  src: url("/fonts/Ubuntu/Ubuntu-Regular.ttf");
+  font-family: 'Ubuntu';
   font-style: normal;
   font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Ubuntu";
-  src: url("/fonts/Ubuntu/Ubuntu-Medium.ttf");
-  font-style: medium;
-  font-weight: 500;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Ubuntu";
-  src: url("/fonts/Ubuntu/Ubuntu-Bold.ttf");
-  font-style: bold;
-  font-weight: 600;
-  font-display: swap;
+  font-display: optional;
+  src: url(/fonts/ubuntu.woff2) format('woff2');
 }
 
 @media (prefers-color-scheme: light) {
