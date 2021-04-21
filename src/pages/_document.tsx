@@ -20,30 +20,19 @@ class MyDocument extends Document<DocumentProps> {
     return (
       <Html dir='ltr'>
         <Head>
+          <link
+            rel='preload'
+            href='/fonts/ubuntu.woff2'
+            as='font'
+            type='font/woff2'
+            crossOrigin='anonymous'
+          />
           <link rel='icon' type='image/svg+xml' href='/images/favicon.svg' />
           <link rel='alternate icon' href='/images/favicon.ico' />
           <link
             rel='mask-icon'
             href='/images/safari-pinned-tab.svg'
             color='#14191e'
-          />
-          <link
-            rel='preload'
-            href='/fonts/Ubuntu/Ubuntu-Regular.ttf'
-            as='font'
-            crossOrigin=''
-          />
-          <link
-            rel='preload'
-            href='/fonts/Ubuntu/Ubuntu-Medium.ttf'
-            as='font'
-            crossOrigin=''
-          />
-          <link
-            rel='preload'
-            href='/fonts/Ubuntu/Ubuntu-Bold.ttf'
-            as='font'
-            crossOrigin=''
           />
         </Head>
         <body className={pageProps.preferredTheme}>
