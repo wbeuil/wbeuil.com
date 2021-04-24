@@ -18,6 +18,7 @@
     --color-text-primary: #111827;
     --color-text-secondary: #6b7280;
     --color-border-primary: #e5e7eb;
+    --color-graph-L: #cccccc;
     --color-graph-L0: #ebedf0;
     --color-graph-L1: #9be9a8;
     --color-graph-L2: #40c463;
@@ -32,6 +33,7 @@
     --color-text-primary: #ededed;
     --color-text-secondary: #9ca3af;
     --color-border-primary: #1f2937;
+    --color-graph-L: #464d53;
     --color-graph-L0: #1f2429;
     --color-graph-L1: #003820;
     --color-graph-L2: #00602d;
@@ -48,6 +50,7 @@
     --color-text-primary: #ededed;
     --color-text-secondary: #9ca3af;
     --color-border-primary: #1f2937;
+    --color-graph-L: #464d53;
     --color-graph-L0: #1f2429;
     --color-graph-L1: #003820;
     --color-graph-L2: #00602d;
@@ -62,6 +65,7 @@
     --color-text-primary: #111827;
     --color-text-secondary: #6b7280;
     --color-border-primary: #e5e7eb;
+    --color-graph-L: #cccccc;
     --color-graph-L0: #ebedf0;
     --color-graph-L1: #9be9a8;
     --color-graph-L2: #40c463;
@@ -121,6 +125,10 @@ body {
 
 footer ul > li {
   margin-bottom: 16px;
+}
+
+[data-level="-1"] {
+  fill: var(--color-graph-L);
 }
 
 [data-level="0"] {
