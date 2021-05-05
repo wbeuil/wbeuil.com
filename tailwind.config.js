@@ -11,7 +11,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Ubuntu', ...fontFamily.sans],
+        sans: ['WorkSans', ...fontFamily.sans],
       },
       backgroundColor: {
         primary: 'var(--color-bg-primary)',

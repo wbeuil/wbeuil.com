@@ -22,7 +22,7 @@ class MyDocument extends Document<DocumentProps> {
         <Head nonce={pageProps.nonce}>
           <link
             rel='preload'
-            href='/fonts/ubuntu.woff2'
+            href='/fonts/work-sans.woff2'
             as='font'
             type='font/woff2'
             crossOrigin='anonymous'
