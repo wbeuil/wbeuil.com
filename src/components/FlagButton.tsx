@@ -11,14 +11,18 @@ import Caret from 'icons/caret.svg';
 
 import '@reach/menu-button/styles.css';
 
-const FlagButton: React.FC = () => {
+type FlagButtonProps = {
+  alternate: string;
+};
+
+const FlagButton: React.FC<FlagButtonProps> = ({ alternate }) => {
   const [style, trigger] = useBoop({ y: 4 });
   const router = useRouter();
   const i18n = useI18n();
 
   const isFR = router?.locale === 'fr';
-  const to = isFR ? '/' : '/fr';
-  const language = isFR ? 'en-US' : 'fr';
+  const to = isFR ? alternate : `/fr${alternate}`;
+  const language = isFR ? 'en' : 'fr';
 
   return (
     <Menu>

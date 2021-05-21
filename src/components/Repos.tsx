@@ -62,7 +62,7 @@ const Repos: React.FC = () => {
                   className='text-gray-400 mr-2'
                 />
                 <a
-                  className='font-medium text-sm text-blue-400 hover:underline'
+                  className='font-medium px-1 text-sm text-blue-400 rounded hover:underline focus:outline-none focus:ring-2'
                   rel='noopener noreferrer'
                   target='_blank'
                   href={repo.url}>

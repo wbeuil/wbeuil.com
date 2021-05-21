@@ -32,7 +32,8 @@
       "pages/*": ["src/pages/*"],
       "styles/*": ["src/styles/*"],
       "utils/*": ["src/utils/*"]
-    }
+    },
+    "typeRoots": ["./node_modules/@types", "./types"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", "cypress"]

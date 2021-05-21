@@ -15,7 +15,7 @@ const FooterLink: React.FC<FooterLinkProps> = ({
   if (external) {
     return (
       <a
-        className='text-gray-400'
+        className='text-gray-400 p-1 rounded focus:outline-none focus:ring-2'
         target='_blank'
         rel='noopener noreferrer'
         href={href}>
@@ -26,7 +26,9 @@ const FooterLink: React.FC<FooterLinkProps> = ({
 
   return (
     <NextLink href={href} passHref>
-      <Anchor className='text-gray-400'>{children}</Anchor>
+      <Anchor className='text-gray-400 p-1 rounded focus:outline-none focus:ring-2'>
+        {children}
+      </Anchor>
     </NextLink>
   );
 };

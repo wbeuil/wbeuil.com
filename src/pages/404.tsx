@@ -9,7 +9,7 @@ const Custom404: React.FC = () => {
   const i18n = useI18n();
 
   return (
-    <Container>
+    <Container seo={i18n.t('404.seo') as unknown as { [key: string]: string }}>
       <div className='max-w-2xl'>
         <h1 className='text-3xl sm:text-5xl font-bold my-8'>
           {i18n.t('404.title')}

@@ -5,7 +5,11 @@ import ThemeButton from 'components/ThemeButton';
 import NavLink from 'components/NavLink';
 import useHiddenNav from 'hooks/useHiddenNav';
 
-const Nav: React.FC = () => {
+type NavProps = {
+  alternate: string;
+};
+
+const Nav: React.FC<NavProps> = ({ alternate }) => {
   const i18n = useI18n();
   const [navRef, isNavVisible] = useHiddenNav();
   const classes = isNavVisible ? 'navbar' : 'navbar navbar-hidden';
@@ -15,10 +19,10 @@ const Nav: React.FC = () => {
       <div className='flex justify-between items-center max-w-4xl w-full p-4 my-0 md:my-4 mx-auto'>
         <div>
           <NavLink href='/'>{i18n.t('nav.home')}</NavLink>
-          {/* <NavLink href='/'>{i18n.t('nav.blog')}</NavLink> */}
+          <NavLink href='/blog'>{i18n.t('nav.blog')}</NavLink>
         </div>
         <div className='flex flex-row'>
-          <FlagButton />
+          <FlagButton alternate={alternate} />
           <ThemeButton />
         </div>
       </div>
