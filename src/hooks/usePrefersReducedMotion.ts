@@ -9,9 +9,8 @@ const getInitialState = () => {
 };
 
 const usePrefersReducedMotion = (): boolean => {
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
-    getInitialState,
-  );
+  const [prefersReducedMotion, setPrefersReducedMotion] =
+    useState(getInitialState);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(QUERY);

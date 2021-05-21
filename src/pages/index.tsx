@@ -8,7 +8,7 @@ const Home: React.FC = () => {
   const i18n = useI18n();
 
   return (
-    <Container>
+    <Container seo={i18n.t('home.seo') as unknown as { [key: string]: string }}>
       <h1 className='text-3xl sm:text-5xl font-bold my-8'>
         {i18n.t('home.welcome')}
       </h1>
@@ -20,7 +20,7 @@ const Home: React.FC = () => {
           <p className='mb-4'>{i18n.t('home.about.2')}</p>
           <p>{i18n.t('home.about.3')}</p>
         </div>
-        <div className='absolute top-0 w-full h-full bg-orange rounded-lg transform -rotate-2 -z-10' />
+        <div className='absolute top-0 w-full h-full bg-orange rounded-lg transform -rotate-1.5 -z-10' />
         <div className='absolute top-0 w-full h-full bg-orange opacity-20 rounded-lg transform rotate-1 -z-20' />
       </div>
       <h2 className='text-2xl font-medium my-16'>{i18n.t('home.community')}</h2>

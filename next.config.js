@@ -7,10 +7,10 @@ child-src 'none';
 frame-src 'none';
 object-src 'none';
 form-action 'none';
-manifest-src 'none';
 frame-ancestors 'none';
 img-src 'self';
 font-src 'self';
+manifest-src 'self';
 style-src 'self' 'unsafe-inline';
 connect-src 'self' ${isProd ? 'https://vitals.vercel-insights.com' : ''};
 `;
@@ -38,8 +38,8 @@ module.exports = {
   },
   reactStrictMode: true,
   i18n: {
-    locales: ['en-US', 'fr'],
-    defaultLocale: 'en-US',
+    locales: ['en', 'fr'],
+    defaultLocale: 'en',
     localeDetection: false,
   },
   webpack(config) {
@@ -58,6 +58,15 @@ module.exports = {
   },
   async headers() {
     return [
+      {
+        source: '/fonts/work-sans.woff2',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
       {
         source: '/:path*',
         headers: [

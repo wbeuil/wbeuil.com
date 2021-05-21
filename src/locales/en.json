@@ -1,0 +1,64 @@
+{
+  "a11y": {
+    "skipContent": "Skip to content"
+  },
+  "seo": {
+    "image": {
+      "url": "https://wbeuil.com/images/preview.png",
+      "alt": "Banner for site wbeuil.com"
+    },
+    "rss": {
+      "en": "RSS feed for english speaker",
+      "fr": "RSS feed for french speaker"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "blog": "Blog",
+    "language": "Change language",
+    "theme": "Change theme"
+  },
+  "footer": {
+    "more": "MORE",
+    "media": "MEDIA",
+    "links": "LINKS",
+    "rss": {
+      "name": "RSS Feed",
+      "href": "/en.feed.xml"
+    }
+  },
+  "home": {
+    "welcome": "Hi there 👋, I'm William Beuil",
+    "about": {
+      "1": "I'm a french developper focusing on React, React Native and Go. Currently working at CloudSkiff, I'm starting experiencing the Open Source world and I'm loving it so far.",
+      "2": "With this website, I want to share my everyday learning because let's be honnest, we're students for life.",
+      "3": "One last thing, I'm a CrossFit addict, an official coffeeholic and the worst gamer in Twitch history."
+    },
+    "community": "My contribution to the community",
+    "seo": {
+      "title": "William Beuil – French developer.",
+      "description": "React, React Native, Go enthusiast and AWS certified developer."
+    }
+  },
+  "blog": {
+    "title": "All blog posts",
+    "none": "No blog posts found",
+    "read": " min read",
+    "anchor": "Link to this heading",
+    "published": "Published on",
+    "modified": "Modified on",
+    "seo": {
+      "title": "Blog – William Beuil",
+      "description": "All blog posts that sum up everything about my adventure as a developer."
+    }
+  },
+  "404": {
+    "title": "Sorry 😩, this page can't be found",
+    "subtitle": "I'm sorry if the page you're looking for does not exist. It may have expired, or there could be a typo. Maybe you can find what you want from my homepage.",
+    "button": "Go Back Home",
+    "seo": {
+      "title": "404 – William Beuil",
+      "description": "React, React Native, Go enthusiast and AWS certified developer."
+    }
+  }
+}

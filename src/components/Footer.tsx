@@ -10,15 +10,18 @@ const Footer: React.FC = () => {
       <hr className='w-full border-1 border-gray-200 dark:border-gray-800 mb-8' />
       <ul className='grid md:grid-cols-3 gap-y-10 px-8'>
         <li>
-          <h3 className='mb-4 font-medium'>{i18n.t('footer.more')}</h3>
+          <h3 className='mb-4 p-1 font-medium'>{i18n.t('footer.more')}</h3>
           <ul>
             <li>
               <FooterLink href='/'>{i18n.t('nav.home')}</FooterLink>
             </li>
+            <li>
+              <FooterLink href='/blog'>{i18n.t('nav.blog')}</FooterLink>
+            </li>
           </ul>
         </li>
         <li>
-          <h3 className='mb-4 font-medium'>{i18n.t('footer.media')}</h3>
+          <h3 className='mb-4 p-1 font-medium'>{i18n.t('footer.media')}</h3>
           <ul>
             <li>
               <FooterLink href='https://twitter.com/wbeuil' external>
@@ -38,11 +41,16 @@ const Footer: React.FC = () => {
           </ul>
         </li>
         <li>
-          <h3 className='mb-4 font-medium'>{i18n.t('footer.links')}</h3>
+          <h3 className='mb-4 p-1 font-medium'>{i18n.t('footer.links')}</h3>
           <ul>
             <li>
               <FooterLink href='mailto:william.beuil@gmail.com' external>
                 Email
+              </FooterLink>
+            </li>
+            <li>
+              <FooterLink href={i18n.t('footer.rss.href')} external>
+                {i18n.t('footer.rss.name')}
               </FooterLink>
             </li>
           </ul>

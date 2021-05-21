@@ -2,6 +2,16 @@
   "a11y": {
     "skipContent": "Aller au contenu"
   },
+  "seo": {
+    "image": {
+      "url": "https://wbeuil.com/images/preview-fr.png",
+      "alt": "Bannière du site wbeuil.com"
+    },
+    "rss": {
+      "en": "Flux RSS pour les anglophones",
+      "fr": "Flux RSS pour les francophones"
+    }
+  },
   "nav": {
     "home": "Accueil",
     "blog": "Blog",
@@ -11,7 +21,11 @@
   "footer": {
     "more": "PLUS",
     "media": "MÉDIAS",
-    "links": "LIENS"
+    "links": "LIENS",
+    "rss": {
+      "name": "Flux RSS",
+      "href": "/fr.feed.xml"
+    }
   },
   "home": {
     "welcome": "Salut 👋, je suis William Beuil",
@@ -20,11 +34,31 @@
       "2": "Avec ce site internet, j'aimerais partager tout ce que j'apprends quotidiennement car soyons réaliste, nous restons étudiants à vie.",
       "3": "Une dernière chose, je suis un addict du CrossFit, un accro à la caféine et le pire joueur de l'histoire de Twitch."
     },
-    "community": "Ma contribution à la communauté"
+    "community": "Ma contribution à la communauté",
+    "seo": {
+      "title": "William Beuil – Développeur français.",
+      "description": "Développeur orienté React, React Native, Go et certifié AWS."
+    }
+  },
+  "blog": {
+    "title": "Tous les articles de blog",
+    "none": "Aucun article de blog",
+    "read": " min de lecture",
+    "anchor": "Lien vers cette ancre",
+    "published": "Publié le",
+    "modified": "Modifié le",
+    "seo": {
+      "title": "Blog – William Beuil",
+      "description": "Tous les articles de blog qui résument mon aventure en tant que développeur."
+    }
   },
   "404": {
     "title": "Désolé 😩, cette page est introuvable",
     "subtitle": "Je suis désolé si la page que vous recherchez n'éxiste plus. Elle n'est peut-être plus en ligne, ou il y a peut-être une erreur de saisie. Retournez sur la page d'accueil pour trouver ce que vous voulez.",
-    "button": "Retour Sur Accueil"
+    "button": "Retour Sur Accueil",
+    "seo": {
+      "title": "404 – William Beuil",
+      "description": "Développeur orienté React, React Native, Go et certifié AWS."
+    }
   }
 }

@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 
 import I18nProvider from 'contexts/I18nContext';
 import ThemeProvider from 'contexts/ThemeContext';
-import lngDict from 'locales/en-US.json';
+import lngDict from 'locales/en.json';
 
 import type { RenderOptions, RenderResult } from '@testing-library/react';
 
@@ -20,9 +20,20 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
+jest.mock('next/router', () => ({
+  useRouter() {
+    return {
+      route: '',
+      pathname: '',
+      query: '',
+      asPath: '',
+    };
+  },
+}));
+
 const AllTheProviders: React.ComponentType = ({ children }) => {
   return (
-    <I18nProvider lngDict={lngDict} locale='en-US' preferredLanguage='en-US'>
+    <I18nProvider lngDict={lngDict} locale='en' preferredLanguage='en'>
       <ThemeProvider preferredTheme='dark'>{children}</ThemeProvider>
     </I18nProvider>
   );

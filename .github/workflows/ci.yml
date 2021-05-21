@@ -84,6 +84,8 @@ jobs:
           urls: |
             ${{ steps.deployment.outputs.url }}
             ${{ steps.deployment.outputs.url }}/fr
+            ${{ steps.deployment.outputs.url }}/blog
+            ${{ steps.deployment.outputs.url }}/fr/blog
           configPath: './lighthouserc.js'
           temporaryPublicStorage: true
           runs: "3"

@@ -22,18 +22,35 @@ class MyDocument extends Document<DocumentProps> {
         <Head nonce={pageProps.nonce}>
           <link
             rel='preload'
-            href='/fonts/ubuntu.woff2'
+            href='/fonts/work-sans.woff2'
             as='font'
             type='font/woff2'
             crossOrigin='anonymous'
           />
-          <link rel='icon' type='image/svg+xml' href='/images/favicon.svg' />
-          <link rel='alternate icon' href='/images/favicon.ico' />
+          <link rel='shortcut icon' href='/favicons/favicon.ico' />
+          <link
+            rel='icon'
+            type='image/png'
+            href='/favicons/favicon-32x32.png'
+            sizes='32x32'
+          />
+          <link
+            rel='icon'
+            type='image/png'
+            href='/favicons/favicon-16x16.png'
+            sizes='16x16'
+          />
+          <link
+            rel='apple-touch-icon'
+            href='/favicons/apple-touch-icon.png'
+            sizes='180x180'
+          />
           <link
             rel='mask-icon'
-            href='/images/safari-pinned-tab.svg'
+            href='/favicons/safari-pinned-tab.svg'
             color='#14191e'
           />
+          <meta name='theme-color' content='#14191e' />
         </Head>
         <body className={pageProps.preferredTheme}>
           <Main />

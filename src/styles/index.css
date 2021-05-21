@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Ubuntu';
-  font-style: normal;
-  font-weight: 400;
+  font-family: 'WorkSans';
+  font-weight: 100 900;
   font-display: optional;
-  src: url(/fonts/ubuntu.woff2) format('woff2');
+  unicode-range: U+0020-007F, U+00A0-00FF;
+  src: url(/fonts/work-sans.woff2) format('woff2');
 }
 
 @media (prefers-color-scheme: light) {
@@ -24,6 +24,9 @@
     --color-graph-L2: #40c463;
     --color-graph-L3: #30a14e;
     --color-graph-L4: #216e39;
+    --color-orange-primary: #fb923c;
+    --color-code-primary: #222222;
+    --color-code-comment: #999999;
   }
 
   .dark {
@@ -39,6 +42,9 @@
     --color-graph-L2: #00602d;
     --color-graph-L3: #10983d;
     --color-graph-L4: #27d545;
+    --color-orange-primary: #fb923c;
+    --color-code-primary: #d4d4d4;
+    --color-code-comment: #676f7d;
   }
 }
 
@@ -56,6 +62,9 @@
     --color-graph-L2: #00602d;
     --color-graph-L3: #10983d;
     --color-graph-L4: #27d545;
+    --color-orange-primary: #fb923c;
+    --color-code-primary: #d4d4d4;
+    --color-code-comment: #676f7d;
   }
 
   .light {
@@ -71,6 +80,9 @@
     --color-graph-L2: #40c463;
     --color-graph-L3: #30a14e;
     --color-graph-L4: #216e39;
+    --color-orange-primary: #fb923c;
+    --color-code-primary: #222222;
+    --color-code-comment: #999999;
   }
 }
 
@@ -85,7 +97,7 @@ body {
 }
 
 [data-reach-menu] {
-  z-index: 20;
+  @apply z-20;
 }
 
 [data-reach-menu-list] {
@@ -124,7 +136,7 @@ body {
 }
 
 footer ul > li {
-  margin-bottom: 16px;
+  @apply mb-4;
 }
 
 [data-level="-1"] {
@@ -151,17 +163,58 @@ footer ul > li {
   fill: var(--color-graph-L4);
 }
 
-.svg-tooltip {
-  position: absolute;
-  z-index: 99999;
-  padding: 10px;
-  font-size: 12px;
-  color: #484f58;
-  text-align: center;
-  background: rgba(0,0,0,.8);
-  border-radius: 6px;
+.unordered > li {
+  @apply my-2;
 }
 
-.svg-tooltip strong {
-  color: #dfe2e5;
+.ordered {
+  counter-reset: counts;
+}
+
+.ordered > li {
+  counter-increment: counts;
+
+  @apply my-2;
+}
+
+.ordered > li::before {
+  content: counters(counts, '.') '. ';
+  min-width: 40px;
+
+  @apply inline-block text-orange font-medium pr-3;
+}
+
+code, pre {
+  font-family: inherit;
+}
+
+code::-webkit-scrollbar {
+  display: none;
+}
+
+pre[class*="language-"]::before {
+  content: attr(data-language);
+
+  @apply absolute text-orange top-1 right-4 text-sm md:text-base font-bold uppercase;
+}
+
+pre[class*="language-"],
+code[class*="language-"] {
+	font-family: Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace;
+	color: var(--color-code-primary);
+	text-shadow: none;
+  word-spacing: normal;
+  -moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+
+  @apply text-sm text-left whitespace-pre break-normal;
+}
+
+.token.comment {
+	color: var(--color-code-comment);
 }

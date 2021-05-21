@@ -12,13 +12,11 @@ export type ThemeDispatch = (state: ThemeState) => void;
 
 export type ThemeState = 'light' | 'dark';
 
-export const ThemeStateContext = createContext<ThemeState | undefined>(
-  undefined,
-);
+export const ThemeStateContext =
+  createContext<ThemeState | undefined>(undefined);
 ThemeStateContext.displayName = 'ThemeStateContext';
-export const ThemeDispatchContext = createContext<ThemeDispatch | undefined>(
-  undefined,
-);
+export const ThemeDispatchContext =
+  createContext<ThemeDispatch | undefined>(undefined);
 ThemeDispatchContext.displayName = 'ThemeDispatchContext';
 
 export const getThemePreference = (ctx: NextPageContext): string =>
