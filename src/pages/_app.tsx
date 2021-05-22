@@ -31,8 +31,6 @@ MyApp.getInitialProps = async (appCtx: AppContext) => {
     pageProps = await appCtx.Component.getInitialProps(appCtx.ctx);
   }
 
-  const preferredLanguage = getLanguagePreference(appCtx.ctx);
-
   const { default: lngDict = {} } = await import(
     `../locales/${appCtx?.router?.locale || 'en'}.json`
   );
@@ -50,7 +48,7 @@ MyApp.getInitialProps = async (appCtx: AppContext) => {
       ...pageProps,
       nonce,
       lngDict,
-      preferredLanguage,
+      preferredLanguage: getLanguagePreference(appCtx.ctx) || 'en',
       preferredTheme: getThemePreference(appCtx.ctx) || 'dark',
     },
   };

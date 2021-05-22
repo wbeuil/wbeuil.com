@@ -1,11 +1,210 @@
 ---
 title: Comment J'ai Fait Mon Blog Bilingue
-description:
+description: Un tour d'horizon de comment j'ai créé mon blog bilingue. Je vais essentiellement parler des technologies utilisées et comment j'ai internationalisé le site.
 locale: fr
 alternate: /blog/my-multilingual-blog
-isPublished: false
+isPublished: true
+publishedAt: "2021-05-22"
 tags:
   - react
   - nextjs
   - tailwind
+  - mdx
 ---
+
+C'est le tout premier article sur mon site, et pour commencer je vais vous expliquer comment j'ai créé mon blog. Je vais essentiellement parler des technologies utilisées et comment j'ai internationalisé le site.
+
+## Next.js
+
+En tant que développeur React, je suis partis sur le framework [Next.js](https://nextjs.org/) pour mon blog. Cela fait plusieurs mois que je travaille avec et c'est juste incroyable. Plus besoin de passer du temps sur [Webpack](https://webpack.js.org/), les performances sont folles (e.g. regardez les statistiques sur [ma dernière PR](https://github.com/wbeuil/wbeuil.com/pull/26#issuecomment-846141619)), mes pages sont rendues côté serveur, je peux utiliser les API Routes pour des besoins spécifiques comme du rendu d'images à la demande.
+
+Bref, je suis totalement amoureux de ce framework ! D'ailleurs, n'oubliez pas de vous inscrire pour la [Next.js Conf](https://nextjs.org/conf) qui se tiendra en ligne.
+
+### SSR
+
+Comme je voulais que mes utilisateurs n'aient pas de flash lorsqu'ils arrivent ou reviennent sur le site, à cause de leurs préférences (langue et thème), je devais faire en sorte que ce soit le serveur qui me renvoie la page HTML. On appelle cela le SSR ou server-side rendering.
+
+Je suis donc passé par une librairie qui me permettait de lire les cookies côté serveur, [nookies](https://github.com/maticzav/nookies), et j'importe dynamiquement, selon la langue, les traductions dans la méthode `getInitialProps`.
+
+```ts
+MyApp.getInitialProps = async (appCtx: AppContext) => {
+  let pageProps = {};
+
+  if (appCtx?.Component?.getInitialProps) {
+    pageProps = await appCtx.Component.getInitialProps(appCtx.ctx);
+  }
+
+  const { default: lngDict = {} } = await import(
+    `../locales/${appCtx?.router?.locale || 'en'}.json`
+  );
+
+  return {
+    pageProps: {
+      ...pageProps,
+      lngDict,
+      preferredLanguage: getLanguagePreference(appCtx.ctx) || 'en',
+      preferredTheme: getThemePreference(appCtx.ctx) || 'dark',
+    },
+  };
+};
+```
+
+### API Routes
+
+Laissez moi vous dire que les [API Routes](https://nextjs.org/docs/api-routes/introduction) c’est juste le **feu** ! Connaissant plutôt bien [AWS Lambda](https://aws.amazon.com/lambda), la tendance serverless est réelle et on devrait tous tester des outils comme les Lambdas ou les [Cloudfare Workers](https://workers.cloudflare.com/). Du coup, le simple fait d’intégrer ce genre d’outil c’est la cerise sur le gâteau, à consommer abondamment.
+
+Mes différentes façons d’utiliser cet outil :
+
+- Creation d’un fichier SVG affichant les scores Lighthouse : [lh-svg](https://github.com/wbeuil/lh-svg) ;
+- Une API pour l’équipe FIFA Club Pro du FCSilmi : [fcsilmi](https://github.com/wbeuil/fcsilmi) ;
+- Authentification Spotify : [currently-playing](https://github.com/wbeuil/currently-playing) ;
+
+Sur mon site, j’utilise les API Routes pour 2 choses. La première, cela me permet de faire des requêtes aux serveurs de [GitHub](https://github.com/wbeuil) pour récupérer mes projets préférés et le graphique de contribution. La deuxième, cela me permet de créer à la demande une image pour mes articles de blog avec [puppeteer-core](https://github.com/puppeteer/puppeteer).
+
+```ts
+export default async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+): Promise<void> => {
+  const { slug } = req.query || {};
+
+  if (slug) {
+    const blogs = getBlogs();
+
+    if (!blogs.find((blog) => blog.replace(/\.mdx/, '') === slug)) {
+      return res.status(404).send('Not Found');
+    }
+
+    const html = generateBlogImageHTML(slug as string);
+    const file = await screenshot(html);
+    res.setHeader('Content-Type', `image/png`);
+    res.setHeader(
+      'Cache-Control',
+      `public, immutable, no-transform, s-maxage=31536000, max-age=31536000`,
+    );
+    return res.status(200).end(file);
+  }
+
+  return res.status(404).send('Not Found');
+};
+```
+
+### Vercel
+
+Mon site est déployé sur [Vercel](https://vercel.com/). Au tout début, j’étais parti du postulat qu’étant à la création de Next.js, c’était les mieux armés pour créer la meilleure intégration avec leur framework.
+
+Après utilisation avec plusieurs sites, et après avoir testé d’autres intégrations (e.g. Netlify notamment), j’ai maintenant la certitude que c'est la meilleure option d'hébergement pour Next.js. En 2 cliques vous pouvez héberger, non seulement votre projet Next.js, mais aussi d’autres projets (e.g. Vue, Angular). Avec [Next.js version 10](https://nextjs.org/blog/next-10), on peut avoir gratuitement, pour un projet, les [Next.js Analytics](https://nextjs.org/analytics). On peut y intégrer des noms de domaine. Leur outil de gestion de variables d’environnements secrètes fonctionne à merveille et sans couac. Et on peut faire des connections avec des outils tierces comme des GitHubs Apps. Essayez par vous même, vous n’allez pas le regretter.
+
+![blog-analytics](/images/blogs/blog-analytics.png)
+
+## Tailwind CSS
+
+J’ai découvert [Tailwind CSS](https://tailwindcss.com/) en septembre dernier et depuis je ne peux m’en passer. Dès que je le peux, je l’utilise sans modération. Voilà mon humble avis sur le sujet :
+
+- Je peux rapidement créer une UI avec leurs utilitaires clés en main ;
+- J’ai drastiquement diminué la taille de mon bundle CSS malgré mon faible niveau en CSS ;
+- Je suis simplement plus productif avec ;
+
+## MDX
+
+[MDX](https://mdxjs.com/), c’est ce qui fait que l’expérience en tant qu’auteur est si parfaite. C’est une extension du Markdown qui nous permet d’écrire du JSX dans des fichiers Markdown. Plus simplement, on peut écrire et bénéficier des composants React dans ces fichiers.
+
+Pour un développeur comme moi qui écrit du Markdown à longueur de journée, c’est tellement bien. Pour ceux qui ne le savent pas, si vous utilisez régulièrement GitHub et GitLab, pour les pulls requests ou pour les issues, vous en écrivez.
+
+```md
+# Comment écrire le paragraphe du dessus en Markdown:
+
+[MDX](https://mdxjs.com/), c’est ce qui fait que l’expérience en tant qu’auteur est si parfaite. C’est une extension du Markdown qui nous permet d’écrire du JSX dans des fichiers Markdown. Plus simplement, on peut écrire et bénéficier des composants React dans ces fichiers.
+
+Pour un développeur comme moi qui écrit du Markdown à longueur de journée, c’est tellement bien. Pour ceux qui ne le savent pas, si vous utilisez régulièrement GitHub et GitLab, pour les pulls requests ou pour les issues, vous en écrivez.
+```
+
+Ci-dessous, un exemple de MDX copié du site officiel :
+
+```mdx
+# Hello, *world*!
+
+Below is an example of JSX embedded in Markdown. <br /> **Try and change
+the background color!**
+
+<div style={{ padding: '20px', backgroundColor: 'tomato' }}>
+  <h3>This is JSX</h3>
+</div>
+```
+
+### mdx-bundler
+
+Afin de faire fonctionner correctement Next.js avec des fichiers MDX, il faut pouvoir les compiler afin de les rendre utilisables en tant que composants React. Pour réaliser aux mieux cette tâche, j’utilise la nouvelle librairie [mdx-bundler](https://github.com/kentcdodds/mdx-bundler) du célèbre [Kent C. Dodds](https://kentcdodds.com/).
+
+Je n’ai pas vraiment d’expériences avec les autres librairies (e.g. [next-mdx-enhanced](https://github.com/hashicorp/next-mdx-enhanced), [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote)) donc je ne me permettrais pas de juger des pours et des contres de chacun.
+
+Afin de rendre l’expérience de lecture la plus agréable possible, j’ai essayé de customiser chaque composant de la page de l’article comme les titres et sous-titres, les images, les blocs de code ou les listes. D’autres composants viendront étoffer la liste au fur et à mesure.
+
+Je me suis énormément inspiré de merveilleux blogs, notamment :
+
+- [Lee Robinson](https://leerob.io/)
+- [Josh W Comeau](https://www.joshwcomeau.com/)
+- [DEV.to](https://dev.to/)
+
+### Frontmatter
+
+Ce blog n’aurait jamais vu le jour sans des meta données pour chaque article de blog. Et pour cela, j’utilise ce qu’on appelle les frontmatter.
+
+Utiles pour l’UI ou encore le SEO, on y écrit des pairs de clés-valeurs. Personnellement, je m’en sers pour le titre, la description, la date de publication, les tags ou encore la langue utilisée.
+
+Ci-dessous un exemple pour cet article de blog :
+
+```mdx
+---
+title: Comment J'ai Fait Mon Blog Bilingue
+description: Un tour d'horizon de comment j'ai créé mon blog bilingue. Je vais essentiellement parler des technologies utilisées et comment j'ai internationalisé le site.
+locale: fr
+alternate: /blog/my-multilingual-blog
+isPublished: true
+publishedAt: "2021-05-22"
+tags:
+  - react
+  - nextjs
+  - tailwind
+  - mdx
+---
+
+Le reste du contenu ...
+```
+
+## Internationalisation
+
+Depuis le début, je me suis juré de faire ce blog à la fois en anglais et en français. Heureusement avec la version 10 de Next.js, le développement de sites internationaux a été énormément facilité.
+
+On a simplement à ajouter dans le fichier `next.config.js` la clé `i18n` avec les langues souhaitées. Next.js va alors automatiquement commencer à rediriger les utilisateurs sur les bons chemins du site (e.g /fr pour les francophones et / pour les anglophones) grâce aux headers `Accept-Language` de leur navigateur.
+
+```js
+// Configuration de mon site
+
+module.exports = {
+  i18n: {
+    locales: ['en', 'fr'],
+    defaultLocale: 'en',
+    localeDetection: false,
+  }
+}
+```
+
+J’utilise [next-localization](https://github.com/StarpTech/next-localization) pour afficher les bonnes traductions dans mes composants React.
+
+Quand on travaille sur des sites internationaux, il faut énormément penser en amont à comment organiser le SEO ([Search Engine Optimization](https://en.wikipedia.org/wiki/Search_engine_optimization)). Il faut donc être rigoureux sur la façon dont on organise le tag `head` dans son HTML.
+
+J’ai essayé d’aller au maximum sur l’intégration des différentes langues. J'ai exposé 2 versions de flux RSS et de webmanifests en suivant au mieux les bonnes pratiques de [W3C](https://www.w3.org/TR/appmanifest/#internationalization) et de [Google Search Console](https://developers.google.com/search/docs/advanced/crawling/international-overview). N’hésitez surtout pas à me laisser des commentaires.
+
+## C’est quoi la suite ?
+
+Je vais continuer à améliorer mon site, du point de vue du lecteur et de l’auteur. Si vous avez des idées de modifications, vous pouvez ouvrir une PR sur GitHub.
+
+Je viens à peine de commencer mon aventure de créateur de contenus et je remercie tous ceux que je suis sur les réseaux et avec qui j’apprends tous les jours:
+
+- [Kent C. Dodds](https://twitter.com/kentcdodds)
+- [Josh W. Comeau](https://twitter.com/JoshWComeau)
+- [Nader Dabit](https://twitter.com/dabit3)
+- [Michael Chan](https://twitter.com/chantastic)
+
+Retrouvez-moi pour du live-coding sur [Twitch](https://twitch.tv/wbeuil) et bientôt sur [Youtube](https://www.youtube.com/channel/UCSgiOYU5_eiRyzk4uyxCOZQ). Abonnez-vous évidemment.
