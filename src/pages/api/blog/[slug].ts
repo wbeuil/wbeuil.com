@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import screenshot from 'utils/screenshot';
-import { getBlogs } from 'utils/mdx';
 import generateBlogImageHTML from 'utils/blog-image';
 
 export default async (
@@ -11,13 +10,16 @@ export default async (
   const { slug } = req.query || {};
 
   if (slug) {
-    const blogs = getBlogs();
+    const response = await fetch(
+      `https://raw.githubusercontent.com/wbeuil/wbeuil.com/main/blogs/${slug}.mdx`,
+    );
 
-    if (!blogs.find((blog) => blog.replace(/\.mdx/, '') === slug)) {
-      return res.status(404).send('Not Found');
+    if (!response.ok) {
+      return res.status(response.status).send(response.statusText);
     }
 
-    const html = generateBlogImageHTML(slug as string);
+    const blog = await response.text();
+    const html = generateBlogImageHTML(blog);
     const file = await screenshot(html);
     res.setHeader('Content-Type', `image/png`);
     res.setHeader(

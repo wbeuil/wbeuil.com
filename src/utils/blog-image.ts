@@ -1,12 +1,10 @@
 import readingTime from 'reading-time';
 import matter from 'gray-matter';
 
-import { getBlogBySlug } from 'utils/mdx';
 import formatDate from 'utils/date';
 
-const generateBlogImageHTML = (slug: string): string => {
-  const source = getBlogBySlug(slug);
-  const { data, content } = matter(source.trim());
+const generateBlogImageHTML = (blog: string): string => {
+  const { data, content } = matter(blog.trim());
   const isEN = data.locale === 'en';
   const date = isEN
     ? `Published on ${formatDate('en-US', new Date(data.publishedAt))}`
