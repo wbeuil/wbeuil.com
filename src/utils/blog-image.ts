@@ -32,7 +32,7 @@ const generateBlogImageHTML = (blog: string): string => {
         align-items: center;
         width: 100%;
         height: 100%;
-        font-family: 'Work Sans', sans-serif;
+        font-family: 'Work Sans';
       }
       h1 {
         font-weight: 700;
@@ -110,7 +110,7 @@ const generateBlogImageHTML = (blog: string): string => {
           </div>
           <div class="row right">
             <p>${date}</p>
-            <span>・</span>
+            <span>·</span>
             <p>${read}</p>
           </div>
         </div>

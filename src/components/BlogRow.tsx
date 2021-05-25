@@ -36,7 +36,7 @@ const BlogRow: React.FC<BlogRowProps> = ({
           {i18n.t('blog.published')}{' '}
           {formatDate(isEN ? 'en-US' : 'fr-FR', new Date(publishedAt))}
         </p>
-        <span className='text-gray-500'>・</span>
+        <span className='text-gray-500'>·</span>
         <p className='text-xs text-gray-500 p-1'>
           {Math.ceil(readingTime.minutes).toFixed(0)}
           {i18n.t('blog.read')}
