@@ -26,7 +26,7 @@ Because I wanted each page to fully rendered knowing the language and theme pref
 
 I use the extremely useful library [nookies](https://github.com/maticzav/nookies) to get both language and theme cookies and I dynamically import the right translation in the `getInitialProps` method.
 
-```ts
+```tsx
 MyApp.getInitialProps = async (appCtx: AppContext) => {
   let pageProps = {};
 
@@ -121,7 +121,7 @@ For a developer like me, write in Markdown is a daily habit. Indeed, if you use 
 
 Here's an example with MDX copy from the official website:
 
-```mdx
+```md
 # Hello, *world*!
 
 Below is an example of JSX embedded in Markdown. <br /> **Try and change
@@ -154,7 +154,7 @@ I use them for UI and SEO purposes because I can store key-value pairs like titl
 
 Here's what this blog post looks like in terms of frontmatter:
 
-```mdx
+```md
 ---
 title: How I Made My Multilingual Blog
 description: An overview of how I came up with my multilingual blog. I will mostly explain the stack I used and how I tackled the internationalization of the whole website.

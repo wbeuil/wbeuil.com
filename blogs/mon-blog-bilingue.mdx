@@ -26,7 +26,7 @@ Comme je voulais que mes utilisateurs n'aient pas de flash lorsqu'ils arrivent o
 
 Je suis donc passé par une librairie qui me permettait de lire les cookies côté serveur, [nookies](https://github.com/maticzav/nookies), et j'importe dynamiquement, selon la langue, les traductions dans la méthode `getInitialProps`.
 
-```ts
+```tsx
 MyApp.getInitialProps = async (appCtx: AppContext) => {
   let pageProps = {};
 
@@ -121,7 +121,7 @@ Pour un développeur comme moi qui écrit du Markdown à longueur de journée, c
 
 Ci-dessous, un exemple de MDX copié du site officiel :
 
-```mdx
+```md
 # Hello, *world*!
 
 Below is an example of JSX embedded in Markdown. <br /> **Try and change
@@ -154,7 +154,7 @@ Utiles pour l’UI ou encore le SEO, on y écrit des pairs de clés-valeurs. Per
 
 Ci-dessous un exemple pour cet article de blog :
 
-```mdx
+```md
 ---
 title: Comment J'ai Fait Mon Blog Bilingue
 description: Un tour d'horizon de comment j'ai créé mon blog bilingue. Je vais essentiellement parler des technologies utilisées et comment j'ai internationalisé le site.
