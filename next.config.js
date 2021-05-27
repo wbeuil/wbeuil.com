@@ -12,7 +12,11 @@ img-src 'self';
 font-src 'self';
 manifest-src 'self';
 style-src 'self' 'unsafe-inline';
-connect-src 'self' ${isProd ? 'https://vitals.vercel-insights.com' : ''};
+connect-src 'self' ${
+  isProd
+    ? 'https://vitals.vercel-insights.com https://analytics.wbeuil.com'
+    : ''
+};
 `;
 
 const PermissionsPolicy = `
@@ -55,6 +59,19 @@ module.exports = {
       ],
     });
     return config;
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/js/script.js',
+        destination:
+          'https://analytics.wbeuil.com/js/plausible.outbound-links.js',
+      },
+      {
+        source: '/api/event',
+        destination: 'https://analytics.wbeuil.com/api/event',
+      },
+    ];
   },
   async headers() {
     return [

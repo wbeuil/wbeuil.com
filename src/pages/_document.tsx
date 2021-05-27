@@ -51,6 +51,23 @@ class MyDocument extends Document<DocumentProps> {
             color='#14191e'
           />
           <meta name='theme-color' content='#14191e' />
+          {process.env.NODE_ENV === 'production' && (
+            <>
+              <script
+                async
+                defer
+                data-domain='wbeuil.com'
+                src='/js/script.js'
+                nonce={pageProps.nonce}
+              />
+              <script
+                nonce={pageProps.nonce}
+                dangerouslySetInnerHTML={{
+                  __html: `window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }`,
+                }}
+              />
+            </>
+          )}
         </Head>
         <body className={pageProps.preferredTheme}>
           <Main />
