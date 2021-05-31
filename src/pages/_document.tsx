@@ -1,19 +1,8 @@
 import Document, { Html, Main, Head, NextScript } from 'next/document';
 
-import type {
-  DocumentContext,
-  DocumentInitialProps,
-  DocumentProps,
-} from 'next/document';
+import type { DocumentProps } from 'next/document';
 
 class MyDocument extends Document<DocumentProps> {
-  static async getInitialProps(
-    ctx: DocumentContext,
-  ): Promise<DocumentInitialProps> {
-    const initialProps = await Document.getInitialProps(ctx);
-    return { ...initialProps };
-  }
-
   render(): JSX.Element {
     const { pageProps } = this.props.__NEXT_DATA__.props;
 
