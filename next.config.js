@@ -1,24 +1,3 @@
-const isProd = process.env.NODE_ENV === 'production' ? true : false;
-
-const ContentSecurityPolicy = `
-base-uri 'none';
-media-src 'none';
-child-src 'none';
-frame-src 'none';
-object-src 'none';
-form-action 'none';
-frame-ancestors 'none';
-img-src 'self';
-font-src 'self';
-manifest-src 'self';
-style-src 'self' 'unsafe-inline';
-connect-src 'self' ${
-  isProd
-    ? 'https://vitals.vercel-insights.com https://analytics.wbeuil.com'
-    : ''
-};
-`;
-
 const PermissionsPolicy = `
 camera=(),
 document-domain=(),
@@ -124,10 +103,6 @@ module.exports = {
           {
             key: 'Strict-Transport-Security',
             value: 'max-age=63072000; includeSubDomains; preload',
-          },
-          {
-            key: 'Content-Security-Policy',
-            value: ContentSecurityPolicy.replace(/\n/g, ' '),
           },
           {
             key: 'Permissions-Policy',

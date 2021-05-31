@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import ThemeProvider, { getThemePreference } from 'contexts/ThemeContext';
 import I18nProvider, { getLanguagePreference } from 'contexts/I18nContext';
 import generateRandomString from 'utils/random';
+import createCSPHeader from 'utils/csp';
 
 import 'styles/index.css';
 
@@ -35,13 +36,9 @@ MyApp.getInitialProps = async (appCtx: AppContext) => {
     `../locales/${appCtx?.router?.locale || 'en'}.json`
   );
 
-  let nonce = '';
-  let header = appCtx?.ctx?.res?.getHeader('content-security-policy');
-  if (header) {
-    nonce = Buffer.from(generateRandomString(16)).toString('base64');
-    header += `script-src 'strict-dynamic' 'nonce-${nonce}' 'unsafe-inline' 'unsafe-eval' http: https:;`;
-    appCtx?.ctx?.res?.setHeader('Content-Security-Policy', header);
-  }
+  const nonce = Buffer.from(generateRandomString(16)).toString('base64');
+  const header = createCSPHeader(nonce);
+  appCtx?.ctx?.res?.setHeader('Content-Security-Policy', header);
 
   return {
     pageProps: {
