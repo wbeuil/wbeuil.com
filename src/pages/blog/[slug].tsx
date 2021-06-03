@@ -18,8 +18,9 @@ const Blog: React.FC<BlogType> = (props) => {
   return <BlogContainer {...props} />;
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   if (params?.slug) {
+    const language = await import(`../../locales/${locale}.json`);
     const source = getBlogBySlug(params.slug as string);
     const { content } = matter(source.trim());
     const remarkPlugins = [remarkPrism];
@@ -34,14 +35,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     });
 
     return {
-      props: { ...result, readingTime: readingTime(content) },
+      props: {
+        ...result,
+        readingTime: readingTime(content),
+        lngDict: language.default,
+      },
     };
   }
 
   return {
-    props: {
-      notFound: true,
-    },
+    notFound: true,
   };
 };
 

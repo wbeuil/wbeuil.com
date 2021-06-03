@@ -22,6 +22,7 @@ const OUTPUT_FILE = path.resolve(__dirname, '..', 'public', 'sitemap.xml');
   const pages = await globby([
     'src/pages/*.tsx',
     '!src/pages/404.tsx',
+    '!src/pages/500.tsx',
     '!src/pages/_*.tsx',
     '!src/pages/api',
   ]);
@@ -47,13 +48,13 @@ const OUTPUT_FILE = path.resolve(__dirname, '..', 'public', 'sitemap.xml');
   });
 
   blogs.forEach((blog) => {
-    const name = blog.replace(/\.mdx/, '');
-    const url = `/blog/${name}`;
-    const content = fs.readFileSync(
+    const slug = blog.replace(/\.mdx/, '');
+    const url = `/blog/${slug}`;
+    const source = fs.readFileSync(
       path.join(__dirname, '..', 'blogs', blog),
       'utf8',
     );
-    const { data } = matter(content);
+    const { data } = matter(source);
 
     if (data.isPublished) {
       sitemap.write({

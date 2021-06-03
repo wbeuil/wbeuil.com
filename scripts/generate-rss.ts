@@ -30,11 +30,11 @@ const OUTPUT_FILE_FR = path.resolve(__dirname, '..', 'public', 'fr.feed.xml');
       [key: string]: string | boolean;
     } => {
       const slug = blog.replace(/\.mdx/, '');
-      const content = fs.readFileSync(
+      const source = fs.readFileSync(
         path.join(__dirname, '..', 'blogs', blog),
         'utf8',
       );
-      const { data } = matter(content);
+      const { data } = matter(source);
       return { ...data, slug };
     })
     .filter((blog) => blog.isPublished)

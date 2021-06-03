@@ -4,6 +4,8 @@ import Container from 'components/Container';
 import Repos from 'components/Repos';
 import Graph from 'components/Graph';
 
+import type { GetStaticProps } from 'next';
+
 const Home: React.FC = () => {
   const i18n = useI18n();
 
@@ -28,6 +30,16 @@ const Home: React.FC = () => {
       <Graph />
     </Container>
   );
+};
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const language = await import(`../locales/${locale}.json`);
+
+  return {
+    props: {
+      lngDict: language.default,
+    },
+  };
 };
 
 export default Home;

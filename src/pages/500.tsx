@@ -8,26 +8,26 @@ import Arrow from 'icons/arrow.svg';
 
 import type { GetStaticProps } from 'next';
 
-const Custom404: React.FC = () => {
+const Custom500: React.FC = () => {
   const i18n = useI18n();
 
   useEffect(() => {
-    window.plausible('404', { props: { path: document.location.pathname } });
+    window.plausible('500', { props: { path: document.location.pathname } });
   }, []);
 
   return (
-    <Container seo={i18n.t('404.seo') as unknown as { [key: string]: string }}>
+    <Container seo={i18n.t('500.seo') as unknown as { [key: string]: string }}>
       <div className='max-w-2xl'>
         <h1 className='text-3xl sm:text-5xl font-bold my-8'>
-          {i18n.t('404.title')}
+          {i18n.t('500.title')}
         </h1>
-        <p className='mb-8'>{i18n.t('404.subtitle')}</p>
+        <p className='mb-8'>{i18n.t('500.subtitle')}</p>
         <NextLink href='/' passHref>
           <Anchor className='inline-flex m-auto p-4 rounded-md border-solid border border-gray-200 dark:border-gray-800 text-gray-400'>
             <span className='mr-1' aria-hidden>
               <Arrow width={16} />
             </span>
-            {i18n.t('404.button')}
+            {i18n.t('500.button')}
           </Anchor>
         </NextLink>
       </div>
@@ -45,4 +45,4 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   };
 };
 
-export default Custom404;
+export default Custom500;

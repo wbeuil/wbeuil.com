@@ -1,7 +1,6 @@
+import { I18nProvider } from 'next-localization';
 import { render } from '@testing-library/react';
 
-import I18nProvider from 'contexts/I18nContext';
-import ThemeProvider from 'contexts/ThemeContext';
 import lngDict from 'locales/en.json';
 
 import type { RenderOptions, RenderResult } from '@testing-library/react';
@@ -33,8 +32,8 @@ jest.mock('next/router', () => ({
 
 const AllTheProviders: React.ComponentType = ({ children }) => {
   return (
-    <I18nProvider lngDict={lngDict} locale='en' preferredLanguage='en'>
-      <ThemeProvider preferredTheme='dark'>{children}</ThemeProvider>
+    <I18nProvider lngDict={lngDict} locale='en'>
+      {children as React.ReactElement}
     </I18nProvider>
   );
 };
