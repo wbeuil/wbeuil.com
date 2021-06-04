@@ -12,38 +12,27 @@ tags:
   - mdx
 ---
 
-This is my very first blog post on my website, so for this one I will try to explain how I came up with my blog. I will mostly explain the stack I used and how I tackled the internationalization of the whole website.
+This is my very first blog post on my website, so for this one, I will try to explain how I came up with my blog. I will mostly explain the stack I used and how I tackled the internationalization of the whole website.
 
 ## Next.js
 
-As a React developer, I decided to create my whole website and thus my blog with the [Next.js](https://nextjs.org/) framework. It's been several months since I started using Next.js and it's just fantastic. I don't get to work extensively with [Webpack](https://webpack.js.org/), the performance is outstanding (e.g. look at these metrics on [my latest PR](https://github.com/wbeuil/wbeuil.com/pull/26#issuecomment-846141619)), my pages are fully server-rendered, I can use the API Routes for specific on-demand images.
+As a React developer, I decided to create my whole website and thus my blog with the [Next.js](https://nextjs.org/) framework. It's been several months since I started using Next.js and it's just fantastic. I don't get to work extensively with [Webpack](https://webpack.js.org/), the performance is outstanding (e.g. look at these metrics on [my latest PR](https://github.com/wbeuil/wbeuil.com/pull/26#issuecomment-846141619)), my pages are automatically generated as static HTML, I can use the API Routes for specific on-demand images.
 
 Well, I'm just in love with this framework! Don't forget to get your ticket for the online [Next.js Conf](https://nextjs.org/conf).
 
-### SSR
+### SSG
 
-Because I wanted each page to fully rendered knowing the language and theme preferences of the reader without a flash, I needed to go the server-side rendering way.
+One of the main strengths of Next.js is its different methods of data fetching. You could either choose to fetch data at build-time (e.g. Static Site Generation) or on-demand on each request (e.g. Server Side Rendering).
 
-I use the extremely useful library [nookies](https://github.com/maticzav/nookies) to get both language and theme cookies and I dynamically import the right translation in the `getInitialProps` method.
+I chose the former one since it's only a simple website with blogs where pre-rendering at build-time is possible and thus increases the performance.
 
 ```tsx
-MyApp.getInitialProps = async (appCtx: AppContext) => {
-  let pageProps = {};
-
-  if (appCtx?.Component?.getInitialProps) {
-    pageProps = await appCtx.Component.getInitialProps(appCtx.ctx);
-  }
-
-  const { default: lngDict = {} } = await import(
-    `../locales/${appCtx?.router?.locale || 'en'}.json`
-  );
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const language = await import(`../locales/${locale}.json`);
 
   return {
-    pageProps: {
-      ...pageProps,
-      lngDict,
-      preferredLanguage: getLanguagePreference(appCtx.ctx) || 'en',
-      preferredTheme: getThemePreference(appCtx.ctx) || 'dark',
+    props: {
+      lngDict: language.default,
     },
   };
 };
@@ -59,7 +48,7 @@ Several use cases of mine:
 - An API for the FIFA Club Pro FCSilmi team: [fcsilmi](https://github.com/wbeuil/fcsilmi);
 - Endpoints for Spotify authentication: [currently-playing](https://github.com/wbeuil/currently-playing);
 
-On my website, I use the API Routes for two things. On one hand, to request my pinned repos and my contribution graph on [GitHub](https://github.com/wbeuil). On the other hand, to request on-demand images for my blog posts using [puppeteer-core](https://github.com/puppeteer/puppeteer).
+On my website, I use the API Routes for two things. On one hand, to request my pinned repositories and my contribution graph on [GitHub](https://github.com/wbeuil). On the other hand, to request on-demand images for my blog posts using [puppeteer-core](https://github.com/puppeteer/puppeteer).
 
 ```ts
 export default async (
@@ -91,15 +80,15 @@ export default async (
 
 ### Vercel
 
-My website is deployed on [Vercel](https://vercel.com/). As being the company behind Next.js, I initially expected them to have the best integration with their own framework.
+My website is deployed on [Vercel](https://vercel.com/). As being the company behind Next.js, I initially expected them to have the best integration with their framework.
 
-But after using it for multiple sites, I have several things to say about their product. In 2 clicks, you can deploy not only your Next.js website, but also a ton of other javascript-based websites. Since [Next.js 10](https://nextjs.org/blog/next-10), you can use freely, for just one website, their [Next.js Analytics](https://nextjs.org/analytics). You can configure custom domains, secret environment variables, integrate GitHub Apps to automate aspects of your workflow. Go try it for yourself, you won't be disappointed.
+But after using it for multiple sites, I have several things to say about their product. In 2 clicks, you can deploy not only your Next.js website but also a ton of other javascript-based websites. Since [Next.js 10](https://nextjs.org/blog/next-10), you can use freely, for just one website, their [Next.js Analytics](https://nextjs.org/analytics). You can configure custom domains, secret environment variables, integrate GitHub Apps to automate aspects of your workflow. Go try it for yourself, you won't be disappointed.
 
 ![blog-analytics](/images/blogs/blog-analytics.png)
 
 ## Tailwind CSS
 
-I discovered [Tailwind CSS](https://tailwindcss.com/) last September and since then, whenever I can, I use it. Here's my two cents on this CSS framework:
+I discovered [Tailwind CSS](https://tailwindcss.com/) last September and since then, whenever I can, I use it. Here are my two cents on this CSS framework:
 
 - I can rapidly build UI with already existing utility classes;
 - I decreased my CSS bundle size which means higher performance overall despite my not-so-good CSS skills;
@@ -107,14 +96,14 @@ I discovered [Tailwind CSS](https://tailwindcss.com/) last September and since t
 
 ## MDX
 
-[MDX](https://mdxjs.com/) is what powers this blog in terms of writing experience. It is an extension of the Markdown that lets us seamlessly write JSX in our Markdown files. Basically we can use and benefit from React components inside a Markdown file.
+[MDX](https://mdxjs.com/) is what powers this blog in terms of writing experience. It is an extension of the Markdown that lets us seamlessly write JSX in our Markdown files. Basically, we can use and benefit from React components inside a Markdown file.
 
 For a developer like me, write in Markdown is a daily habit. Indeed, if you use GitHub or GitLab for your pull requests, then you've already written in Markdown.
 
 ```md
 # How I write the above paragraph in Markdown:
 
-[MDX](https://mdxjs.com/) is what powers this blog in terms of writing experience. It is an extension of the Markdown that lets us seamlessly write JSX in our Markdown files. Basically we can use and benefit from React components inside a Markdown file.
+[MDX](https://mdxjs.com/) is what powers this blog in terms of writing experience. It is an extension of the Markdown that lets us seamlessly write JSX in our Markdown files. Basically, we can use and benefit from React components inside a Markdown file.
 
 For a developer like me, write in Markdown is a daily habit. Indeed, if you use GitHub or GitLab for your pull requests, then you've already written in Markdown.
 ```
@@ -124,8 +113,7 @@ Here's an example with MDX copy from the official website:
 ```md
 # Hello, *world*!
 
-Below is an example of JSX embedded in Markdown. <br /> **Try and change
-the background color!**
+Below is an example of JSX embedded in Markdown. <br /> **Try and change the background color!**
 
 <div style={{ padding: '20px', backgroundColor: 'tomato' }}>
   <h3>This is JSX</h3>
@@ -138,7 +126,7 @@ To make Next.js works with MDX, we need to compile and bundle the markdown files
 
 I don't have any experiences with the other libraries (e.g. [next-mdx-enhanced](https://github.com/hashicorp/next-mdx-enhanced), [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote)) so I won't judge the pros and cons of one compared to the others.
 
-To increase the reader experience, I tried to customize as much as possible every components that render the final page like the headings with custom anchor link, lists (unordered and ordered), images, codes, inline codes etc... More to come obviously with all the blog posts I want to write.
+To increase the reader experience, I tried to customize as much as possible every component that renders the final page like the headings with custom anchor link, lists (unordered and ordered), images, codes, inline codes etc... More to come obviously with all the blog posts I want to write.
 
 I was greatly inspired by awesome blogs I follow:
 
@@ -200,11 +188,11 @@ I tried to push to the extreme the internationalization by having both english a
 
 I will continue to improve my website, both from the writer and from the user perspective. PRs are welcome if you want to be part of this adventure.
 
-I've just started my creator journey and for that I'm so thankful to all the creators I follow, from whom I learnt and still learn a lot:
+I've just started my creator journey and for that, I'm so thankful to all the creators I follow, from whom I learnt and still learn a lot:
 
 - [Kent C. Dodds](https://twitter.com/kentcdodds)
 - [Josh W. Comeau](https://twitter.com/JoshWComeau)
 - [Nader Dabit](https://twitter.com/dabit3)
 - [Michael Chan](https://twitter.com/chantastic)
 
-I started live streaming my developer adventure on [Twitch](https://twitch.tv/wbeuil), and hopefully soon I will release my first video on [Youtube](https://www.youtube.com/channel/UCSgiOYU5_eiRyzk4uyxCOZQ).
+I started to live streaming my developer adventure on [Twitch](https://twitch.tv/wbeuil), and hopefully, soon I will release my first video on [Youtube](https://www.youtube.com/channel/UCSgiOYU5_eiRyzk4uyxCOZQ).
