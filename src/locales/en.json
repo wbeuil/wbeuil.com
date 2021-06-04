@@ -60,5 +60,14 @@
       "title": "404 – William Beuil",
       "description": "React, React Native, Go enthusiast and AWS certified developer."
     }
+  },
+  "500": {
+    "title": "Wow 😱, you broke everything",
+    "subtitle": "I don't know what you did but you've just destroyed my website... Please try again in a few minutes or just return to my homepage.",
+    "button": "Go Back Home",
+    "seo": {
+      "title": "500 – William Beuil",
+      "description": "React, React Native, Go enthusiast and AWS certified developer."
+    }
   }
 }

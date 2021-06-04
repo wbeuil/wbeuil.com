@@ -1,9 +1,13 @@
 import { useI18n } from 'next-localization';
+import dynamic from 'next/dynamic';
 
 import FlagButton from 'components/FlagButton';
-import ThemeButton from 'components/ThemeButton';
 import NavLink from 'components/NavLink';
 import useHiddenNav from 'hooks/useHiddenNav';
+
+const ThemeButton = dynamic(() => import('components/ThemeButton'), {
+  ssr: false,
+});
 
 type NavProps = {
   alternate: string;
@@ -22,8 +26,8 @@ const Nav: React.FC<NavProps> = ({ alternate }) => {
           <NavLink href='/blog'>{i18n.t('nav.blog')}</NavLink>
         </div>
         <div className='flex flex-row'>
-          <FlagButton alternate={alternate} />
           <ThemeButton />
+          <FlagButton alternate={alternate} />
         </div>
       </div>
     </nav>

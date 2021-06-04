@@ -26,9 +26,15 @@ const Blog: React.FC<{ blogs: Information[] }> = ({ blogs }) => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const language = await import(`../locales/${locale}.json`);
   const blogs = getBlogsInformation(locale);
 
-  return { props: { blogs } };
+  return {
+    props: {
+      lngDict: language.default,
+      blogs,
+    },
+  };
 };
 
 export default Blog;

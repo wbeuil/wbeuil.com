@@ -1,14 +1,34 @@
 import Document, { Html, Main, Head, NextScript } from 'next/document';
 
-import type { DocumentProps } from 'next/document';
+import generateRandomString from 'utils/random';
+import createCSP from 'utils/csp';
 
-class MyDocument extends Document<DocumentProps> {
+import type {
+  DocumentProps,
+  DocumentContext,
+  DocumentInitialProps,
+} from 'next/document';
+
+type CustomProps = {
+  nonce: string;
+};
+
+class MyDocument extends Document<DocumentProps & CustomProps> {
+  static async getInitialProps(
+    ctx: DocumentContext,
+  ): Promise<DocumentInitialProps & CustomProps> {
+    const initialProps = await Document.getInitialProps(ctx);
+    const nonce = Buffer.from(generateRandomString(16)).toString('base64');
+
+    return { ...initialProps, nonce };
+  }
+
   render(): JSX.Element {
-    const { pageProps } = this.props.__NEXT_DATA__.props;
+    const { nonce } = this.props;
 
     return (
       <Html dir='ltr'>
-        <Head nonce={pageProps.nonce}>
+        <Head nonce={nonce}>
           <link
             rel='preload'
             href='/fonts/work-sans.woff2'
@@ -40,6 +60,11 @@ class MyDocument extends Document<DocumentProps> {
             color='#14191e'
           />
           <meta name='theme-color' content='#14191e' />
+          <meta name='color-scheme' content='dark light' />
+          <meta
+            httpEquiv='Content-Security-Policy'
+            content={createCSP(nonce)}
+          />
           {process.env.NODE_ENV === 'production' && (
             <>
               <script
@@ -47,20 +72,26 @@ class MyDocument extends Document<DocumentProps> {
                 defer
                 data-domain='wbeuil.com'
                 src='/js/script.js'
-                nonce={pageProps.nonce}
+                nonce={nonce}
               />
               <script
-                nonce={pageProps.nonce}
+                nonce={nonce}
                 dangerouslySetInnerHTML={{
-                  __html: `window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }`,
+                  __html: `window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)};`,
                 }}
               />
             </>
           )}
         </Head>
-        <body className={pageProps.preferredTheme}>
+        <body>
+          <script
+            nonce={nonce}
+            dangerouslySetInnerHTML={{
+              __html: `function getThemePreference(){return localStorage.getItem("theme")?localStorage.getItem("theme"):window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.body.classList.add(getThemePreference());`,
+            }}
+          />
           <Main />
-          <NextScript nonce={pageProps.nonce} />
+          <NextScript nonce={nonce} />
         </body>
       </Html>
     );

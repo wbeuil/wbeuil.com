@@ -1,7 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+type EventOptions = {
+  callback?: () => void;
+  props?: { [propName: string]: string };
+};
+
+type PlausibleArgs = [string, EventOptions] | [string];
 
 interface Window {
-  plausible: any;
+  plausible: {
+    (...args: PlausibleArgs): void;
+    q?: PlausibleArgs[];
+  };
 }
 
 declare module '*.svg' {

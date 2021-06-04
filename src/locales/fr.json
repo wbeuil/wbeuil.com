@@ -60,5 +60,14 @@
       "title": "404 – William Beuil",
       "description": "Développeur orienté React, React Native, Go et certifié AWS."
     }
+  },
+  "500": {
+    "title": "Wow 😱, tu as tout cassé",
+    "subtitle": "Je ne sais pas ce que tu as fait mais tu viens de casser mon site... Retente d'ici quelques minutes ou retourne sur la page d'accueil.",
+    "button": "Retour Sur Accueil",
+    "seo": {
+      "title": "500 – William Beuil",
+      "description": "Développeur orienté React, React Native, Go et certifié AWS."
+    }
   }
 }
