@@ -16,34 +16,24 @@ C'est le tout premier article sur mon site, et pour commencer je vais vous expli
 
 ## Next.js
 
-En tant que développeur React, je suis partis sur le framework [Next.js](https://nextjs.org/) pour mon blog. Cela fait plusieurs mois que je travaille avec et c'est juste incroyable. Plus besoin de passer du temps sur [Webpack](https://webpack.js.org/), les performances sont folles (e.g. regardez les statistiques sur [ma dernière PR](https://github.com/wbeuil/wbeuil.com/pull/26#issuecomment-846141619)), mes pages sont rendues côté serveur, je peux utiliser les API Routes pour des besoins spécifiques comme du rendu d'images à la demande.
+En tant que développeur React, je suis parti sur le framework [Next.js](https://nextjs.org/) pour mon blog. Cela fait plusieurs mois que je travaille avec et c'est juste incroyable. Plus besoin de passer du temps sur [Webpack](https://webpack.js.org/), les performances sont folles (e.g. regardez les statistiques sur [ma dernière PR](https://github.com/wbeuil/wbeuil.com/pull/26#issuecomment-846141619)), mes pages sont dynamiquement générées en HTML, je peux utiliser les API Routes pour des besoins spécifiques comme du rendu d'images à la demande.
 
 Bref, je suis totalement amoureux de ce framework ! D'ailleurs, n'oubliez pas de vous inscrire pour la [Next.js Conf](https://nextjs.org/conf) qui se tiendra en ligne.
 
-### SSR
+### SSG
 
-Comme je voulais que mes utilisateurs n'aient pas de flash lorsqu'ils arrivent ou reviennent sur le site, à cause de leurs préférences (langue et thème), je devais faire en sorte que ce soit le serveur qui me renvoie la page HTML. On appelle cela le SSR ou server-side rendering.
+Une des forces de Next.js c'est de pouvoir choisir sa méthode de récupération de données. Soit vous les récupérez au moment de build votre site (e.g. Static Site Generation), soit à la demande à chaque requête du site (e.g. Server Side Rendering).
 
-Je suis donc passé par une librairie qui me permettait de lire les cookies côté serveur, [nookies](https://github.com/maticzav/nookies), et j'importe dynamiquement, selon la langue, les traductions dans la méthode `getInitialProps`.
+J'ai choisi la première pour des raisons simples. Toutes les pages de mon site sont statiques. On peut donc les créer en amont et gagner en performance.
+
 
 ```tsx
-MyApp.getInitialProps = async (appCtx: AppContext) => {
-  let pageProps = {};
-
-  if (appCtx?.Component?.getInitialProps) {
-    pageProps = await appCtx.Component.getInitialProps(appCtx.ctx);
-  }
-
-  const { default: lngDict = {} } = await import(
-    `../locales/${appCtx?.router?.locale || 'en'}.json`
-  );
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const language = await import(`../locales/${locale}.json`);
 
   return {
-    pageProps: {
-      ...pageProps,
-      lngDict,
-      preferredLanguage: getLanguagePreference(appCtx.ctx) || 'en',
-      preferredTheme: getThemePreference(appCtx.ctx) || 'dark',
+    props: {
+      lngDict: language.default,
     },
   };
 };
@@ -51,11 +41,11 @@ MyApp.getInitialProps = async (appCtx: AppContext) => {
 
 ### API Routes
 
-Laissez moi vous dire que les [API Routes](https://nextjs.org/docs/api-routes/introduction) c’est juste le **feu** ! Connaissant plutôt bien [AWS Lambda](https://aws.amazon.com/lambda), la tendance serverless est réelle et on devrait tous tester des outils comme les Lambdas ou les [Cloudfare Workers](https://workers.cloudflare.com/). Du coup, le simple fait d’intégrer ce genre d’outil c’est la cerise sur le gâteau, à consommer abondamment.
+Laissez-moi vous dire que les [API Routes](https://nextjs.org/docs/api-routes/introduction) c’est juste le **feu** ! Connaissant plutôt bien [AWS Lambda](https://aws.amazon.com/lambda), la tendance serverless est réelle et on devrait tous tester des outils comme les Lambdas ou les [Cloudfare Workers](https://workers.cloudflare.com/). Du coup, le simple fait d’intégrer ce genre d’outil c’est la cerise sur le gâteau, à consommer abondamment.
 
 Mes différentes façons d’utiliser cet outil :
 
-- Creation d’un fichier SVG affichant les scores Lighthouse : [lh-svg](https://github.com/wbeuil/lh-svg) ;
+- Création d’un fichier SVG affichant les scores Lighthouse : [lh-svg](https://github.com/wbeuil/lh-svg) ;
 - Une API pour l’équipe FIFA Club Pro du FCSilmi : [fcsilmi](https://github.com/wbeuil/fcsilmi) ;
 - Authentification Spotify : [currently-playing](https://github.com/wbeuil/currently-playing) ;
 
@@ -91,9 +81,9 @@ export default async (
 
 ### Vercel
 
-Mon site est déployé sur [Vercel](https://vercel.com/). Au tout début, j’étais parti du postulat qu’étant à la création de Next.js, c’était les mieux armés pour créer la meilleure intégration avec leur framework.
+Mon site est déployé sur [Vercel](https://vercel.com/). Au tout début, j’étais parti du postulat qu’étant à la création de Next.js, ce sont les mieux armés pour créer la meilleure intégration avec leur framework.
 
-Après utilisation avec plusieurs sites, et après avoir testé d’autres intégrations (e.g. Netlify notamment), j’ai maintenant la certitude que c'est la meilleure option d'hébergement pour Next.js. En 2 cliques vous pouvez héberger, non seulement votre projet Next.js, mais aussi d’autres projets (e.g. Vue, Angular). Avec [Next.js version 10](https://nextjs.org/blog/next-10), on peut avoir gratuitement, pour un projet, les [Next.js Analytics](https://nextjs.org/analytics). On peut y intégrer des noms de domaine. Leur outil de gestion de variables d’environnements secrètes fonctionne à merveille et sans couac. Et on peut faire des connections avec des outils tierces comme des GitHubs Apps. Essayez par vous même, vous n’allez pas le regretter.
+Après utilisation avec plusieurs sites, et après avoir testé d’autres intégrations (e.g. Netlify notamment), j’ai maintenant la certitude que c'est la meilleure option d'hébergement pour Next.js. En 2 cliques vous pouvez héberger, non seulement votre projet Next.js, mais aussi d’autres projets (e.g. Vue, Angular). Avec [Next.js version 10](https://nextjs.org/blog/next-10), on peut avoir gratuitement, pour un projet, les [Next.js Analytics](https://nextjs.org/analytics). On peut y intégrer des noms de domaine. Leur outil de gestion de variables d’environnements secrètes fonctionne à merveille et sans couac. Et on peut faire des connexions avec des outils tiers comme des GitHubs Apps. Essayez par vous-mêmes, vous n’allez pas le regretter.
 
 ![blog-analytics](/images/blogs/blog-analytics.png)
 
@@ -124,8 +114,7 @@ Ci-dessous, un exemple de MDX copié du site officiel :
 ```md
 # Hello, *world*!
 
-Below is an example of JSX embedded in Markdown. <br /> **Try and change
-the background color!**
+Below is an example of JSX embedded in Markdown. <br /> **Try and change the background color!**
 
 <div style={{ padding: '20px', backgroundColor: 'tomato' }}>
   <h3>This is JSX</h3>
@@ -136,7 +125,7 @@ the background color!**
 
 Afin de faire fonctionner correctement Next.js avec des fichiers MDX, il faut pouvoir les compiler afin de les rendre utilisables en tant que composants React. Pour réaliser aux mieux cette tâche, j’utilise la nouvelle librairie [mdx-bundler](https://github.com/kentcdodds/mdx-bundler) du célèbre [Kent C. Dodds](https://kentcdodds.com/).
 
-Je n’ai pas vraiment d’expériences avec les autres librairies (e.g. [next-mdx-enhanced](https://github.com/hashicorp/next-mdx-enhanced), [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote)) donc je ne me permettrais pas de juger des pours et des contres de chacun.
+Je n’ai pas vraiment d’expériences avec les autres librairies (e.g. [next-mdx-enhanced](https://github.com/hashicorp/next-mdx-enhanced), [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote)) donc je ne me permettrais pas de juger les pour et les contre de chacun.
 
 Afin de rendre l’expérience de lecture la plus agréable possible, j’ai essayé de customiser chaque composant de la page de l’article comme les titres et sous-titres, les images, les blocs de code ou les listes. D’autres composants viendront étoffer la liste au fur et à mesure.
 
@@ -200,7 +189,7 @@ J’ai essayé d’aller au maximum sur l’intégration des différentes langue
 
 Je vais continuer à améliorer mon site, du point de vue du lecteur et de l’auteur. Si vous avez des idées de modifications, vous pouvez ouvrir une PR sur GitHub.
 
-Je viens à peine de commencer mon aventure de créateur de contenus et je remercie tous ceux que je suis sur les réseaux et avec qui j’apprends tous les jours:
+Je viens à peine de commencer mon aventure de créateur de contenus et je remercie tous ceux que je suis sur les réseaux et avec qui j’apprends tous les jours :
 
 - [Kent C. Dodds](https://twitter.com/kentcdodds)
 - [Josh W. Comeau](https://twitter.com/JoshWComeau)
