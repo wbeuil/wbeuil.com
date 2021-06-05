@@ -1,4 +1,5 @@
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 
 import Anchor from 'components/Anchor';
 
@@ -7,9 +8,16 @@ type NavLinkProps = {
 };
 
 const NavLink: React.FC<NavLinkProps> = ({ children, href }) => {
+  const router = useRouter();
+  const isActive =
+    router.pathname.replace(/\/$/, '') === href.replace(/\/$/, '');
+
   return (
     <NextLink href={href} passHref>
-      <Anchor className='mr-2 md:mr-4 p-2 font-medium rounded-md focus:outline-none focus:ring-2'>
+      <Anchor
+        className={`${
+          isActive ? 'text-primary' : 'text-secondary'
+        } mr-2 md:mr-4 py-2 px-2 md:px-4 font-semibold text-lg rounded-lg hover:text-primary hover:bg-secondary active:bg-tertiary focus:outline-none focus-visible:ring-2 focus-visible:bg-secondary focus-visible:text-primary navlink`}>
         {children}
       </Anchor>
     </NextLink>

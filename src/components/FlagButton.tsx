@@ -29,7 +29,7 @@ const FlagButton: React.FC<FlagButtonProps> = ({ alternate }) => {
       <MenuButton
         aria-label={i18n.t('nav.language')}
         title={i18n.t('nav.language')}
-        className='flex flex-row justify-center items-center rounded-xl py-2 px-2 hover:bg-secondary active:bg-tertiary focus:outline-none focus:ring-2'
+        className='flex flex-row justify-center items-center rounded-xl py-2 px-2 hover:bg-secondary active:bg-tertiary focus:outline-none focus-visible:ring-2 focus-visible:bg-secondary'
         onMouseEnter={() => trigger(true)}>
         {isFR ? (
           <>
