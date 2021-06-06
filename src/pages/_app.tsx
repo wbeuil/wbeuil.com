@@ -1,5 +1,6 @@
 import { I18nProvider } from 'next-localization';
 import { useRouter } from 'next/router';
+import 'focus-visible';
 
 import 'styles/index.css';
 

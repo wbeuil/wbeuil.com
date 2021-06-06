@@ -26,7 +26,6 @@ Une des forces de Next.js c'est de pouvoir choisir sa méthode de récupération
 
 J'ai choisi la première pour des raisons simples. Toutes les pages de mon site sont statiques. On peut donc les créer en amont et gagner en performance.
 
-
 ```tsx
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const language = await import(`../locales/${locale}.json`);

@@ -26,47 +26,62 @@ const FlagButton: React.FC<FlagButtonProps> = ({ alternate }) => {
 
   return (
     <Menu>
-      <MenuButton
-        aria-label={i18n.t('nav.language')}
-        title={i18n.t('nav.language')}
-        className='flex flex-row justify-center items-center rounded-xl py-2 px-2 hover:bg-secondary active:bg-tertiary focus:outline-none focus:ring-2'
-        onMouseEnter={() => trigger(true)}>
-        {isFR ? (
-          <>
-            <FlagFR width={30} height={30} aria-hidden />
-            <span className='sr-only'>Français</span>
-          </>
-        ) : (
-          <>
-            <FlagUS width={30} height={30} aria-hidden />
-            <span className='sr-only'>English</span>
-          </>
-        )}
-        <animated.span className='ml-2' style={style} aria-hidden>
-          <Caret width={24} height={24} />
-        </animated.span>
-      </MenuButton>
-      <MenuList className='rounded-xl mt-2 slide-up'>
-        <NextLink href={to} locale={language}>
-          <MenuLink
-            as='a'
-            href={to}
-            lang={language}
-            className='flex-row justify-center items-center focus:outline-none'>
+      {({ isExpanded }) => (
+        <>
+          <MenuButton
+            aria-label={i18n.t('nav.language')}
+            title={i18n.t('nav.language')}
+            className='flex flex-row justify-center items-center rounded-xl py-2 px-2 hover:bg-secondary active:bg-tertiary focus:outline-none focus-visible:ring-2 focus-visible:bg-secondary'
+            onMouseEnter={() => trigger(true)}>
             {isFR ? (
               <>
-                <FlagUS width={30} height={30} className='mr-3' aria-hidden />
-                <span>English</span>
+                <FlagFR width={30} height={30} aria-hidden />
+                <span className='sr-only'>Français</span>
               </>
             ) : (
               <>
-                <FlagFR width={30} height={30} className='mr-3' aria-hidden />
-                <span>Français</span>
+                <FlagUS width={30} height={30} aria-hidden />
+                <span className='sr-only'>English</span>
               </>
             )}
-          </MenuLink>
-        </NextLink>
-      </MenuList>
+            <animated.span className='ml-2' style={style} aria-hidden>
+              <Caret width={24} height={24} />
+            </animated.span>
+          </MenuButton>
+          <MenuList
+            className={`rounded-xl mt-2 ${isExpanded ? 'slide-down' : ''}`}>
+            <NextLink href={to} locale={language}>
+              <MenuLink
+                as='a'
+                href={to}
+                lang={language}
+                className='flex-row justify-center items-center focus:outline-none'>
+                {isFR ? (
+                  <>
+                    <FlagUS
+                      width={30}
+                      height={30}
+                      className='mr-3'
+                      aria-hidden
+                    />
+                    <span>English</span>
+                  </>
+                ) : (
+                  <>
+                    <FlagFR
+                      width={30}
+                      height={30}
+                      className='mr-3'
+                      aria-hidden
+                    />
+                    <span>Français</span>
+                  </>
+                )}
+              </MenuLink>
+            </NextLink>
+          </MenuList>
+        </>
+      )}
     </Menu>
   );
 };

@@ -30,7 +30,7 @@ const ThemeButton: React.FC = () => {
 
   return (
     <button
-      className='rounded-xl mr-2 py-2 px-2 hover:bg-secondary active:bg-tertiary focus:outline-none focus:ring-2'
+      className='rounded-xl mr-2 md:mr-4 py-2 px-2 hover:bg-secondary active:bg-tertiary focus:outline-none focus-visible:ring-2 focus-visible:bg-secondary'
       type='button'
       aria-label={i18n.t('nav.theme')}
       title={i18n.t('nav.theme')}
