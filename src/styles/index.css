@@ -113,7 +113,7 @@ body {
 }
 
 [data-reach-skip-link]:focus {
-  @apply bg-secondary text-sm p-3 rounded-md outline-none ring-2 z-30 !important;
+  @apply bg-secondary text-base p-3 rounded-md outline-none ring-2 z-30 !important;
 }
 
 @keyframes slide-down {
