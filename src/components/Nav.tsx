@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useI18n } from 'next-localization';
 import dynamic from 'next/dynamic';
 
@@ -17,6 +18,16 @@ const Nav: React.FC<NavProps> = ({ alternate }) => {
   const i18n = useI18n();
   const [navRef, isNavVisible] = useHiddenNav();
   const classes = isNavVisible ? 'navbar' : 'navbar navbar-hidden';
+
+  // hack to close the menu on scroll
+  useEffect(() => {
+    const btn = document.querySelector('[data-reach-menu-button=""]');
+    if (!isNavVisible && btn?.getAttribute('aria-expanded')) {
+      const clickEvent = document.createEvent('MouseEvents');
+      clickEvent.initEvent('mousedown', true, true);
+      btn?.dispatchEvent(clickEvent);
+    }
+  }, [isNavVisible]);
 
   return (
     <nav ref={navRef} className={`sticky top-0 z-10 bg-primary ${classes}`}>
