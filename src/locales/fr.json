@@ -15,6 +15,7 @@
   "nav": {
     "home": "Accueil",
     "blog": "Blog",
+    "metrics": "Métriques",
     "language": "Changer de langue",
     "theme": "Changer de thème"
   },
@@ -50,6 +51,15 @@
     "seo": {
       "title": "Blog – William Beuil",
       "description": "Tous les articles de blog qui résument mon aventure en tant que développeur."
+    }
+  },
+  "metrics": {
+    "title": "Métriques",
+    "explanation": "Vous trouverez ici tout ce que j'analyse en termes de métriques sur mon site. J'essaie d'être le plus transparent possible en les rendant publiques. Pour toutes questions, envoyez-moi un mail à william.beuil@gmail.com ou ouvrez une issue sur GitHub.",
+    "pageviews": "Pages Consultées",
+    "seo": {
+      "title": "Métriques – William Beuil",
+      "description": "Un tableau de bord des métriques que j'analyse sur mon site."
     }
   },
   "404": {

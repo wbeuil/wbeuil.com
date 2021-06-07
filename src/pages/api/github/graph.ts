@@ -33,10 +33,5 @@ export default async (
     body: JSON.stringify({ query }),
   }).then((r) => r.json());
 
-  res.setHeader(
-    'Cache-Control',
-    'public, max-age=1200, stale-while-revalidate=600',
-  );
-
-  res.status(200).json({ graph: response.data });
+  return res.status(200).json({ graph: response.data });
 };

@@ -18,6 +18,9 @@ const Footer: React.FC = () => {
             <li>
               <FooterLink href='/blog'>{i18n.t('nav.blog')}</FooterLink>
             </li>
+            <li>
+              <FooterLink href='/metrics'>{i18n.t('nav.metrics')}</FooterLink>
+            </li>
           </ul>
         </li>
         <li>
