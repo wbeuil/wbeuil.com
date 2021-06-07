@@ -26,17 +26,21 @@ const OUTPUT_FILE_FR = path.resolve(__dirname, '..', 'public', 'fr.feed.xml');
   const blogs = fs.readdirSync(path.join(__dirname, '..', 'blogs'));
 
   blogs
-    .map((blog): {
-      [key: string]: string | boolean;
-    } => {
-      const slug = blog.replace(/\.mdx/, '');
-      const source = fs.readFileSync(
-        path.join(__dirname, '..', 'blogs', blog),
-        'utf8',
-      );
-      const { data } = matter(source);
-      return { ...data, slug };
-    })
+    .map(
+      (
+        blog,
+      ): {
+        [key: string]: string | boolean;
+      } => {
+        const slug = blog.replace(/\.mdx/, '');
+        const source = fs.readFileSync(
+          path.join(__dirname, '..', 'blogs', blog),
+          'utf8',
+        );
+        const { data } = matter(source);
+        return { ...data, slug };
+      },
+    )
     .filter((blog) => blog.isPublished)
     .sort(
       (a, b) =>

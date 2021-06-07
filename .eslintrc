@@ -23,6 +23,7 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:jest/recommended",
     "plugin:jest-dom/recommended",
     "plugin:testing-library/react",
@@ -44,14 +45,8 @@
   "rules": {
     "prettier/prettier": "error",
 
-    "no-console": "off",
-    "no-underscore-dangle": "off",
-
     "react/react-in-jsx-scope": "off",
-    "react/prop-types": "off",
-
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "react/prop-types": "off"
   },
 
   "settings":  {

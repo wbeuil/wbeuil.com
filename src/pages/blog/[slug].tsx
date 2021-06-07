@@ -25,7 +25,7 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     const { content } = matter(source.trim());
     const remarkPlugins = [remarkPrism];
     const result = await bundleMDX(source.trim(), {
-      xdmOptions(_, options) {
+      xdmOptions(options) {
         options.remarkPlugins = [
           ...(options.remarkPlugins ?? []),
           remarkPlugins,
