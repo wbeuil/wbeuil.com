@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import Rects from 'components/Rects';
 import Months from 'components/Months';

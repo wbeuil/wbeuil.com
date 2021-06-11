@@ -1,3 +1,4 @@
+import preloadAll from 'jest-next-dynamic';
 import { I18nProvider } from 'next-localization';
 import { render } from '@testing-library/react';
 
@@ -29,6 +30,10 @@ jest.mock('next/router', () => ({
     };
   },
 }));
+
+beforeAll(async () => {
+  await preloadAll();
+});
 
 const AllTheProviders: React.ComponentType = ({ children }) => {
   return (
