@@ -27,7 +27,9 @@
     "test:e2e": "start-server-and-test dev 3000 cy:open",
     "test:e2e:run": "start-server-and-test start 3000 cy:run",
     "validate": "npm-run-all --parallel lint typecheck",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "publish": "ts-node scripts/publish-blog.ts",
+    "frontmatter": "ts-node scripts/check-frontmatter.ts"
   },
   "dependencies": {
     "@reach/menu-button": "^0.15.1",
@@ -53,14 +55,17 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/react-hooks": "^7.0.0",
     "@testing-library/user-event": "^13.1.9",
+    "@types/dotenv": "^8.2.0",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.12.2",
+    "@types/node-fetch": "^2.5.10",
     "@types/react": "^17.0.11",
     "@typescript-eslint/eslint-plugin": "^4.26.1",
     "@typescript-eslint/parser": "^4.26.1",
     "@typescript-eslint/typescript-estree": "^4.26.1",
     "babel-plugin-dynamic-import-node": "^2.3.3",
     "cypress": "^7.5.0",
+    "dotenv": "^10.0.0",
     "eslint": "^7.28.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-import-resolver-typescript": "^2.4.0",
@@ -80,7 +85,9 @@
     "jest": "^27.0.4",
     "jest-next-dynamic": "^1.0.1",
     "jest-watch-typeahead": "^0.6.4",
+    "joi": "^17.4.0",
     "lint-staged": "^11.0.0",
+    "node-fetch": "^2.6.1",
     "npm-run-all": "^4.1.5",
     "postcss-focus-visible": "^5.0.0",
     "postcss-preset-env": "^6.7.0",
@@ -93,11 +100,5 @@
     "ts-node": "^10.0.0",
     "typescript": "^4.3.2",
     "unified": "^9.2.1"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "prettier --write",
-      "eslint --fix"
-    ]
   }
 }
