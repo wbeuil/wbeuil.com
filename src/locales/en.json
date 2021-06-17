@@ -48,6 +48,9 @@
     "anchor": "Link to this heading",
     "published": "Published on",
     "modified": "Modified on",
+    "copy": "Copy",
+    "copy-success": "Copied",
+    "copy-error": "Error",
     "seo": {
       "title": "Blog – William Beuil",
       "description": "All blog posts that sum up everything about my adventure as a developer."
