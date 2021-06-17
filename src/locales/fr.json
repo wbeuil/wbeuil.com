@@ -48,6 +48,9 @@
     "anchor": "Lien vers cette ancre",
     "published": "Publié le",
     "modified": "Modifié le",
+    "copy": "Copier",
+    "copy-success": "Copié",
+    "copy-error": "Erreur",
     "seo": {
       "title": "Blog – William Beuil",
       "description": "Tous les articles de blog qui résument mon aventure en tant que développeur."

@@ -25,7 +25,7 @@ const BlogComponents: ComponentMap = {
   li: ListItem,
   img: Image as React.FC, // fixed type on mdx-bundler
   a: TextLink as React.FC, // fixed type on mdx-bundler
-  code: Code as React.FC, // fixed type on mdx-bundler
+  code: Code as unknown as React.FC, // fixed type on mdx-bundler
   pre: Preformatted as React.FC, // fixed type on mdx-bundler
   div: Division as React.FC, // fixed type on mdx-bundler
 };
