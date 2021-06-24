@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+
 type ImageProps = {
   alt: string;
   src: string;

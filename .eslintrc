@@ -21,6 +21,7 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:@next/next/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
@@ -33,6 +34,7 @@
 
   "plugins": [
     "@typescript-eslint",
+    "@next/next",
     "jest",
     "jest-dom",
     "jsx-a11y",
