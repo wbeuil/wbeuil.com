@@ -35,7 +35,6 @@ xr-spatial-tracking=()
 
 module.exports = {
   future: {
-    webpack5: true,
     strictPostcssConfiguration: true,
   },
   reactStrictMode: true,
