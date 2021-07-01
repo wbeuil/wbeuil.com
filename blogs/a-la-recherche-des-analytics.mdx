@@ -1,0 +1,218 @@
+---
+title: À La Recherche Des Analytics
+description: Je vais vous expliquer pourquoi j'ai choisi Plausible Analytics et comment je l'ai implémenté sur mon site.
+locale: fr
+alternate: /blog/make-analytics-great-again
+isPublished: true
+publishedAt: "2021-06-29"
+tags:
+  - nextjs
+  - terraform
+  - aws
+---
+
+Ami lecteur, si vous êtes en train de lire cet article c'est que vous recherchez un moyen de mesurer le nombre de vues sur votre site internet. Certes, il existe Google Analytics. Malheureusement, bien que gratuit, ce n'est pas du tout un outil facile à utiliser. J'ai personnellement opté pour une alternative et je vais essayer de vous expliquer pourquoi j'ai choisi [Plausible Analytics](https://plausible.io).
+
+## C'est quoi Plausible ?
+
+Plausible Analytics a été créé et est toujours maintenu par [Uku Taht](https://twitter.com/ukutaht) et [Marko Saric](https://twitter.com/markosaric), originaires d'Estonie. C'est un service assez récent puisqu'il a été commencé en décembre 2018 et a été lancé officiellement en production en Avril 2019. C'est un outil qui semble être une alternative à Google Analytics simple et respectueuse de la vie privée.
+
+## Ses points forts
+
+Ce que j'apprécie le plus dans Plausible, c'est avant tout un service **open source**, c'est-à-dire que vous pouvez aller voir directement le code source voire y contribuer sur leur [projet GitHub](https://github.com/plausible/analytics).
+
+C'est simple à utiliser et à intégrer d'autant plus que le script est petit, **moins de 1 KB**, et donc très rapide à charger.
+
+Ils n'utilisent en aucun cas les cookies, contrairement à Google Analytics, ce qui les rend **compatible RGPD et PECR**. Dites au revoir aux bannières d'autorisations de cookies.
+
+Il n'y a **aucun tracking des utilisateurs** entre leurs appareils, ni entre les sites visités et les applications utilisées, ce qui signifie qu'ils ne peuvent pas connaître ou comprendre le comportement de vos utilisateurs.
+
+Toutes les données collectées sont affichées ci-dessous. Comme vous pouvez le voir, il n'y a **aucune donnée personnelle** collectée. Au final, Plausible mesure la tendance globale du trafic sur le site internet.
+
+![Plausible Data Points](/images/blogs/plausible-data-points.png)
+
+En dernier, je ne suis pas obligé d'utiliser leur solution SAAS. En effet je peux **l'héberger où je veux** et le mettre en accès public pour une envie de transparence.
+
+## Héberger Plausible comme moi
+
+Pour ce petit projet, nous allons utiliser leur [solution](https://github.com/plausible/hosting) clé en mains.
+
+Nous allons déployer l'infrastructure sur [AWS](https://aws.amazon.com/) avec comme outil IaC (Infrastructure as Code) [Terraform](https://www.terraform.io/).
+
+Le diagramme ci-dessous résume parfaitement l'architecture :
+
+![Plausible Diagram](/images/blogs/plausible-diagram.png)
+
+D'abord, il nous faut un [VPC](https://aws.amazon.com/vpc) qui va nous permettre d'y intégrer d'autres ressources dans un réseau privé et isolé.
+
+```hcl
+resource "aws_vpc" "vpc" {
+  cidr_block = "10.0.0.0/16"
+}
+```
+
+Pour permettre au serveur Plausible d'avoir un accès à internet, nous devons le placer dans un sous-réseau (e.g. subnet en anglais) public. Pour ceux qui ne le savent pas, on dit qu'un sous-réseau est public s'il est associé à une table de routage (e.g. route table en anglais) comportant une route vers une passerelle internet (e.g. internet gateway en anglais).
+
+```hcl
+resource "aws_subnet" "subnet" {
+  vpc_id     = aws_vpc.vpc.id
+  cidr_block = "10.0.0.0/24"
+}
+
+resource "aws_internet_gateway" "gw" {
+  vpc_id = aws_vpc.vpc.id
+}
+
+resource "aws_default_route_table" "rt" {
+  default_route_table_id = aws_vpc.vpc.default_route_table_id
+}
+
+resource "aws_route" "r" {
+  route_table_id         = aws_default_route_table.rt.id
+  gateway_id             = aws_internet_gateway.gw.id
+  destination_cidr_block = "0.0.0.0/0"
+}
+```
+
+Pour sécuriser le serveur, nous avons besoin d'un groupe de sécurité (e.g. security group en anglais) qui agit en tant que pare-feu virtuel pour notre serveur afin de contrôler le trafic entrant, comme les requêtes HTTP, et sortant.
+
+```hcl
+resource "aws_default_security_group" "sg" {
+  vpc_id = aws_vpc.vpc.id
+}
+
+resource "aws_security_group_rule" "i_http" {
+  type              = "ingress"
+  from_port         = 8000
+  to_port           = 8000
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  description       = "HTTP"
+  security_group_id = aws_default_security_group.sg.id
+}
+
+resource "aws_security_group_rule" "e_all" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  description       = "All protocols"
+  security_group_id = aws_default_security_group.sg.id
+}
+```
+
+Nous aurons aussi besoin d'un accès SSH sur notre serveur afin de pouvoir configurer correctement Plausible. Pour faire simple on va autoriser toutes les IP à se connecter en SSH, mais sachez qu'en production il faut uniquement autoriser votre adresse IP.
+
+```hcl
+resource "aws_security_group_rule" "i_ssh" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  description       = "SSH"
+  security_group_id = aws_default_security_group.sg.id
+}
+```
+
+Nous pouvons, ensuite, créer [l'instance EC2](https://aws.amazon.com/ec2) dans laquelle nous allons installer Plausible.
+
+```hcl
+resource "aws_instance" "instance" {
+  ami                         = "ami-0b3e57ee3b63dd76b"
+  instance_type               = "t2.micro"
+  subnet_id                   = aws_subnet.subnet.id
+  associate_public_ip_address = true
+  key_name                    = "plausible"
+  user_data                   = file("script.sh")
+  root_block_device {
+    volume_size           = 8
+    volume_type           = "gp2"
+    encrypted             = true
+    delete_on_termination = false
+  }
+}
+```
+
+La clé SSH a été créée avec la commande `aws ec2 create-key-pair --key-name plausible --query "KeyMaterial" --output text > plausible.pem`.
+
+Je me suis permis d'y ajouter un script qui va automatiquement mettre à jour tous les paquets, et installer docker et docker-compose dans l'instance à son initialisation pour gagner du temps.
+
+```bash
+#!/bin/bash
+yum update -y
+amazon-linux-extras install -y docker
+service docker start
+usermod -a -G docker ec2-user
+chkconfig docker on
+curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+reboot
+```
+
+Maintenant, nous avons plus qu'à suivre le [guide officiel](https://plausible.io/docs/self-hosting).
+
+On télécharge en premier leur projet :
+
+```bash
+$ curl -L https://github.com/plausible/hosting/archive/master.tar.gz | tar xz
+$ cd hosting-master
+```
+
+Puis, nous devons ajouter les variables d'environnement requis dans le fichier `plausible-conf.env` :
+
+```
+ADMIN_USER_EMAIL=XXX@gmail.com
+ADMIN_USER_NAME=XXX
+ADMIN_USER_PWD=XXX
+BASE_URL=http://1.2.3.4:8000 = l'adresse IP publique de votre instance EC2
+SECRET_KEY_BASE=XXX = une clé secrete aléatoire en base64
+```
+
+Comme j'aimerais utiliser mon compte Gmail pour leur fonctionnalité d'emailing, il faut créer un [mot de passe d'application](https://support.google.com/accounts/answer/185833?hl=fr) et ajouter les variables d'environnement suivantes :
+
+```
+SMTP_HOST_ADDR=smtp.gmail.com
+SMTP_HOST_PORT=465
+SMTP_USER_NAME=XXX@gmail.com
+SMTP_USER_PWD=XXX = votre mot de passe d'application
+SMTP_HOST_SSL_ENABLED=true
+```
+
+Enfin, nous pouvons lancer le serveur Plausible avec `docker-compose up -d`.
+
+Nous devrions pouvoir aller sur `http://1.2.3.4:8000` dans notre navigateur préféré et voir la page d'authentification de Plausible. Une fois l'enregistrement terminé, nous devrions avoir le script à rajouter dans le tag `head` de notre site pour commencer à mesurer le nombre de vues.
+
+Sur un site Next.js, vous pouvez mettre le script dans le fichier `_document.js` :
+
+```js
+class MyDocument extends Document {
+  static async getInitialProps(ctx) {
+    const initialProps = await Document.getInitialProps(ctx)
+    return { ...initialProps }
+  }
+
+  render() {
+    return (
+      <Html>
+        <Head>
+          <script async defer data-domain="example.com" src="http://1.2.3.4:8000/js/plausible.js" />
+        </Head>
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    )
+  }
+}
+```
+
+Parfait ! Nous pouvons maintenant retourner sur `http://1.2.3.4:8000` et voir les vues s'accumuler.
+
+## En résumé
+
+Nous avons installé, configuré et déployé notre serveur Plausible sur AWS en utilisant Terraform. N'hésitez pas à suivre leur [documentation](https://plausible.io/docs) si vous voulez davantage configurer votre serveur.
+
+Merci d'avoir lu l'article ! Si vous avez aimé ou s'il vous a aidé d'une certaine manière, pensez à le partager. Probablement que j'écrirai dans une deuxième partie comment y intégrer le SSL.
