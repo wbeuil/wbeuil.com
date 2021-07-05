@@ -32,9 +32,11 @@
     "frontmatter": "ts-node scripts/check-frontmatter.ts"
   },
   "dependencies": {
+    "@influxdata/influxdb-client": "^1.14.0",
     "@reach/menu-button": "^0.15.2",
     "@reach/skip-nav": "^0.15.2",
     "chrome-aws-lambda": "^9.1.0",
+    "device-detector-js": "^2.2.10",
     "focus-visible": "^5.2.0",
     "gray-matter": "^4.0.3",
     "mdx-bundler": "^4.1.1",
