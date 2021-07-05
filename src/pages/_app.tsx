@@ -2,9 +2,16 @@ import { I18nProvider } from 'next-localization';
 import { useRouter } from 'next/router';
 import 'focus-visible';
 
+import { addToQueue, sendVitals } from 'utils/vitals';
+
 import 'styles/index.css';
 
-import type { AppProps } from 'next/app';
+import type { AppProps, NextWebVitalsMetric } from 'next/app';
+
+export const reportWebVitals = (metric: NextWebVitalsMetric): void => {
+  addToQueue(metric);
+  sendVitals();
+};
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   const { lngDict, ...rest } = pageProps;
