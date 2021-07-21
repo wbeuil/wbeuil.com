@@ -11,7 +11,6 @@ import type {
   GetStaticPaths,
   GetStaticPathsResult,
 } from 'next';
-import type { PluggableList } from 'unified';
 import type { Blog as BlogType } from 'components/BlogContainer';
 
 const Blog: React.FC<BlogType> = (props) => {
@@ -29,7 +28,7 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
         options.remarkPlugins = [
           ...(options.remarkPlugins ?? []),
           remarkPlugins,
-        ] as PluggableList;
+        ] as never;
         return options;
       },
     });

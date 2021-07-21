@@ -12,7 +12,9 @@ const Custom404: React.FC = () => {
   const i18n = useI18n();
 
   useEffect(() => {
-    window.plausible('404', { props: { path: document.location.pathname } });
+    if (window.plausible) {
+      window.plausible('404', { props: { path: document.location.pathname } });
+    }
   }, []);
 
   return (
