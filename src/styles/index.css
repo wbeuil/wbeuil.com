@@ -160,6 +160,14 @@ body {
   -webkit-transform: translate3d(0,calc(78px*-1),0);
 }
 
+.test {
+  background-image: url(/images/graph.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 114px;
+}
+
 @media (min-width: 768px) {
   .navbar-hidden {
     transform: translate3d(0,calc(110px*-1),0);

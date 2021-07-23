@@ -2,6 +2,7 @@ import { useI18n } from 'next-localization';
 
 import Container from 'components/Container';
 import Analytics from 'components/Analytics';
+import Vitals from 'components/Vitals';
 
 import type { GetStaticProps } from 'next';
 
@@ -20,6 +21,9 @@ const Metrics: React.FC = () => {
       <ol className='w-full max-w-2xl grid md:grid-cols-2 gap-4'>
         <li>
           <Analytics siteId='wbeuil.com' />
+        </li>
+        <li>
+          <Vitals />
         </li>
       </ol>
     </Container>

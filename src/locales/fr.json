@@ -60,6 +60,7 @@
     "title": "Métriques",
     "explanation": "Vous trouverez ici tout ce que j'analyse en termes de métriques sur mon site. J'essaie d'être le plus transparent possible en les rendant publiques. Pour toutes questions, envoyez-moi un mail à william.beuil@gmail.com ou ouvrez une issue sur GitHub.",
     "pageviews": "Pages Consultées",
+    "vitals": "Web Vitals",
     "seo": {
       "title": "Métriques – William Beuil",
       "description": "Un tableau de bord des métriques que j'analyse sur mon site."

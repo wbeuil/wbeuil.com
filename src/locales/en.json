@@ -60,6 +60,7 @@
     "title": "Metrics",
     "explanation": "You'll find here everything you want to know about what I'm tracking on my website. I want it to be public as much as possible. Do not hesitate to send me an email at william.beuil@gmail.com if you have any questions or just open an issue on GitHub.",
     "pageviews": "Total Pageviews",
+    "vitals": "Web Vitals",
     "seo": {
       "title": "Metrics – William Beuil",
       "description": "A dashboard about the metrics I track on my website."
