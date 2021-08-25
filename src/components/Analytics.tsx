@@ -14,7 +14,7 @@ const Analytics: React.FC<AnalyticsProps> = ({ siteId }) => {
   return (
     <Metric
       href={`https://analytics.wbeuil.com/${siteId}`}
-      metric={data?.pageviews.toString()}>
+      metric={data?.pageviews.toString() || '-'}>
       <div>
         {i18n.t('metrics.pageviews')}{' '}
         <span className='text-gray-500'>{siteId}</span>

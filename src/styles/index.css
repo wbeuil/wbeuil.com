@@ -160,7 +160,7 @@ body {
   -webkit-transform: translate3d(0,calc(78px*-1),0);
 }
 
-.test {
+.vitals {
   background-image: url(/images/graph.svg);
   background-repeat: no-repeat;
   background-size: cover;

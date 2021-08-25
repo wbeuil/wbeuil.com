@@ -6,16 +6,11 @@ import Container from 'components/Container';
 import BlogComponents from 'components/BlogComponents';
 import BlogRow from 'components/BlogRow';
 
-export type ReadTime = {
-  text: string;
-  time: number;
-  words: number;
-  minutes: number;
-};
+import type { IReadTimeResults } from 'reading-time';
 
 export type Information = {
   slug: string;
-  readingTime: ReadTime;
+  readingTime: IReadTimeResults;
 } & Frontmatter;
 
 export type Frontmatter = {
@@ -31,7 +26,7 @@ export type Frontmatter = {
 export type Blog = {
   code: string;
   frontmatter: Frontmatter;
-  readingTime: ReadTime;
+  readingTime: IReadTimeResults;
 };
 
 const BlogContainer: React.FC<Blog> = ({ code, frontmatter, readingTime }) => {
