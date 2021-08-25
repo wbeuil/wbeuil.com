@@ -3,12 +3,12 @@ import { useRouter } from 'next/router';
 
 import formatDate from 'utils/date';
 
-import type { ReadTime } from 'components/BlogContainer';
+import type { IReadTimeResults } from 'reading-time';
 
 type BlogRowProps = {
   tags: string[];
   publishedAt: string;
-  readingTime: ReadTime;
+  readingTime: IReadTimeResults;
 };
 
 const BlogRow: React.FC<BlogRowProps> = ({

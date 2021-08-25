@@ -1,9 +1,10 @@
-import BlogContainer from 'components/BlogContainer';
-import { bundleMDX } from 'mdx-bundler';
+import { bundleMDXFile } from 'mdx-bundler';
 import remarkPrism from 'remark-prism';
 import readingTime from 'reading-time';
 import matter from 'gray-matter';
+import path from 'path';
 
+import BlogContainer from 'components/BlogContainer';
 import { getBlogs, getBlogBySlug } from 'utils/mdx';
 
 import type {
@@ -20,23 +21,25 @@ const Blog: React.FC<BlogType> = (props) => {
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   if (params?.slug) {
     const language = await import(`../../locales/${locale}.json`);
-    const source = getBlogBySlug(params.slug as string);
-    const { content } = matter(source.trim());
     const remarkPlugins = [remarkPrism];
-    const result = await bundleMDX(source.trim(), {
-      xdmOptions(options) {
-        options.remarkPlugins = [
-          ...(options.remarkPlugins ?? []),
-          remarkPlugins,
-        ] as never;
-        return options;
+    const { code, frontmatter, matter } = await bundleMDXFile(
+      path.join(process.cwd(), 'blogs', `${params.slug}.mdx`),
+      {
+        xdmOptions(options) {
+          options.remarkPlugins = [
+            ...(options.remarkPlugins ?? []),
+            remarkPlugins,
+          ] as never;
+          return options;
+        },
       },
-    });
+    );
 
     return {
       props: {
-        ...result,
-        readingTime: readingTime(content),
+        code,
+        frontmatter,
+        readingTime: readingTime(matter.content),
         lngDict: language.default,
       },
     };

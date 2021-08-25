@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import useScrollPosition from 'hooks/useSrollPosition';
+import useScrollPosition from 'hooks/useScrollPosition';
 
 const useHiddenNav = (): [(instance: HTMLElement | null) => void, boolean] => {
   const [isNavVisible, setIsNavVisible] = useState(true);

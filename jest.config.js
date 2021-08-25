@@ -7,7 +7,10 @@ module.exports = {
   },
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
-    '!src/utils/test-utils.tsx',
+    '!src/components/Boop.tsx',
+    '!src/pages/_document.tsx',
+    '!src/pages/api/**',
+    '!src/utils/**',
   ],
   moduleDirectories: ['node_modules', './src'],
   setupFilesAfterEnv: ['./config/jest/rtl.setup.ts'],
