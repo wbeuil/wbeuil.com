@@ -1,10 +1,20 @@
-import { render, screen } from 'utils/test-utils';
-import blog from './blog.json';
+import fs from 'fs';
+import path from 'path';
 
-jest.mock('mdx-bundler', () => ({
-  ...jest.requireActual('mdx-bundler'),
-  bundleMDXFile: jest.fn().mockReturnValue(blog),
-}));
+import { render, screen } from 'utils/test-utils';
+
+jest.mock('mdx-bundler', () => {
+  const data = fs.readFileSync(
+    path.join(process.cwd(), 'src', '__tests__', 'blog.json'),
+    'utf8',
+  );
+  const blog = JSON.parse(data);
+
+  return {
+    ...jest.requireActual('mdx-bundler'),
+    bundleMDXFile: jest.fn().mockReturnValue(blog),
+  };
+});
 
 test('render slug page', async () => {
   render('/blog/test');
