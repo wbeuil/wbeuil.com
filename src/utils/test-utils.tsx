@@ -1,10 +1,7 @@
-import preloadAll from 'jest-next-dynamic';
-import { I18nProvider } from 'next-localization';
-import { render } from '@testing-library/react';
+import { getPage } from 'next-page-tester';
+import { build, fake, perBuild } from '@jackfranklin/test-data-bot';
 
-import lngDict from 'locales/en.json';
-
-import type { RenderOptions, RenderResult } from '@testing-library/react';
+import type { Information } from 'components/BlogContainer';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -20,34 +17,39 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-jest.mock('next/router', () => ({
-  useRouter() {
-    return {
-      route: '',
-      pathname: '',
-      query: '',
-      asPath: '',
-    };
-  },
-}));
-
-beforeAll(async () => {
-  await preloadAll();
+Object.defineProperty(window, 'plausible', {
+  value: jest.fn(),
 });
 
-const AllTheProviders: React.ComponentType = ({ children }) => {
-  return (
-    <I18nProvider lngDict={lngDict} locale='en'>
-      {children as React.ReactElement}
-    </I18nProvider>
-  );
-};
+const blogBuilder = build<Information>('Blog', {
+  fields: {
+    slug: fake((f) => `/blog/${f.lorem.slug()}`),
+    readingTime: {
+      minutes: fake((f) => f.random.number({ min: 2, max: 10 })),
+    },
+    title: fake((f) => f.name.title()),
+    description: fake((f) => f.lorem.sentences()),
+    locale: perBuild(() => 'en'),
+    alternate: fake((f) => `/blog/${f.lorem.slug()}`),
+    isPublished: perBuild(() => true),
+    publishedAt: fake((f) => {
+      const date = f.date.past();
+      const year = date.getUTCFullYear();
+      const month = ('0' + (date.getUTCMonth() + 1)).slice(-2);
+      const day = ('0' + date.getUTCDate()).slice(-2);
+      return `${year}-${month}-${day}`;
+    }),
+    tags: perBuild(() => ['react', 'test']),
+  },
+});
 
-const customRender = (
-  ui: React.ReactElement,
-  options?: RenderOptions,
-): RenderResult => render(ui, { wrapper: AllTheProviders, ...options });
+const customRender = async (route: string): Promise<void> => {
+  const { render } = await getPage({
+    route,
+  });
+  render();
+};
 
 export * from '@testing-library/react';
 
-export { customRender as render };
+export { customRender as render, blogBuilder };

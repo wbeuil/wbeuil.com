@@ -1,11 +1,11 @@
 import { render, screen } from 'utils/test-utils';
 
-test('render home page', async () => {
-  render('/');
+test('render 500 page', async () => {
+  render('/500');
 
   await screen.findByRole('button', { name: 'Change theme' });
 
   expect(
     screen.getByRole('heading', { level: 1 }).textContent,
-  ).toMatchInlineSnapshot(`"Hi there 👋, I'm William Beuil"`);
+  ).toMatchInlineSnapshot(`"Wow 😱, you broke everything"`);
 });

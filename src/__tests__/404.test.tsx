@@ -1,11 +1,11 @@
 import { render, screen } from 'utils/test-utils';
 
-test('render home page', async () => {
-  render('/');
+test('render 404 page', async () => {
+  render('/404');
 
   await screen.findByRole('button', { name: 'Change theme' });
 
   expect(
     screen.getByRole('heading', { level: 1 }).textContent,
-  ).toMatchInlineSnapshot(`"Hi there 👋, I'm William Beuil"`);
+  ).toMatchInlineSnapshot(`"Sorry 😩, this page can't be found"`);
 });
